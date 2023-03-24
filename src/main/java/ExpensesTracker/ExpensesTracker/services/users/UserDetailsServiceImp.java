@@ -7,6 +7,7 @@ import ExpensesTracker.ExpensesTracker.repositories.user.AuthorityRepo;
 import ExpensesTracker.ExpensesTracker.repositories.user.UserMetaRepo;
 import ExpensesTracker.ExpensesTracker.repositories.user.UserPrincipalRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -68,6 +69,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
         return userPrincipalRepo.save(newUser);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void deleteUserPrincipal(long id) {
         UserPrincipal user = userPrincipalRepo.findById(id).get();
         List<Authority> authorities = user.getAuthorities();
