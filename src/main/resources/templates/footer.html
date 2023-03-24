@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      class="bg-light">
+<head>
+</head>
+<body class="bg-light">
+<th:block th:fragment="footer">
+  <footer class="text-center bg-light" id="footer">
+    <div class="container">
+      <br />
+    </div>
+    <div class="container row align-middle">
+      <div class="col align-middle">
+        <h7><a class="navbar-brand" sec:authorize="!isAuthenticated()" th:href="@{/}">
+          Expenses Tracker
+        </a>
+          <a class="navbar-brand" sec:authorize="isAuthenticated()" th:href="@{/landing}">
+            Expenses Tracker
+          </a></h7>
+      </div>
+      <div class="col align-middle">
+        <h7>
+                    <span sec:authorize="isAuthenticated()">
+                    <b th:inline="text"> [[${#httpServletRequest.remoteUser}]] </b>
+                    <a th:if="${#httpServletRequest.remoteUser !=null}" th:href="@{/logout}">Sign Out</a>
+                    </span>
+          <span sec:authorize="!isAuthenticated()">
+                        <a th:href="@{/register}">Sign Up!</a>
+                    </span>
+        </h7>
+      </div>
+    </div>
+  </footer>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="~{layout}">
+<head>
+  <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+  <br />
+  <div class="container border rounded text-center bg-light">
+    <br />
+    <div class="p-3 rounded-lg m-2">
+      <h1>Login</h1>
+      <p class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error}">
+        Sorry, please try again!</p>
+      <form th:action="@{/login}" method="post">
+        <hr />
+        <div class="form-control bg-light">
+          <label>Username</label>
+          <div>
+            <input type="text" class="form-control" id="username"
+                   name="username"
+                   placeholder="Your Username">
+          </div>
+        </div>
+        <hr />
+        <div class="form-control bg-light">
+          <label for="password">Password</label>
+          <div>
+            <input type="password" class="form-control" id="password"
+                   placeholder="Your Password"
+                   name="password">
+          </div>
+        </div>
+        <hr />
+        <div class="d-grid gap-2 col-6 mx-auto">
+          <input class="btn btn-primary" type="submit" value="Log in"/>
+        </div>
+      </form>
+    </div>
+    <br />
+  </div>
+  <br />
+</div>
+</body>
+</html>
