@@ -26,6 +26,7 @@ public class UserPrincipal implements UserDetails  {
     @JsonIgnore
     private String password;
 
+    // possibly change to ALL for deletion
     @OneToOne(cascade = CascadeType.PERSIST, optional = false)
     private UserMeta userMeta;
 

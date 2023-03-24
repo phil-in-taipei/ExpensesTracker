@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.Set;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
@@ -66,9 +68,31 @@ public class UserDetailsServiceImp implements UserDetailsService {
         return userPrincipalRepo.save(newUser);
     }
 
+    public void deleteUserPrincipal(long id) {
+        UserPrincipal user = userPrincipalRepo.findById(id).get();
+        List<Authority> authorities = user.getAuthorities();
+        while(authorities.iterator().hasNext())
+        {
+            Authority authority = authorities.iterator().next();
+            Set<UserPrincipal> users = authority.getUsers();
+            users.remove(user);
+            authority.setUsers(users);
+            authorityRepo.save(authority);
+            authorities.remove(authority);
+        }
+        user.setAuthorities(authorities);
+        userPrincipalRepo.save(user);
+        userPrincipalRepo.deleteById(id);
+    }
+
     public List<UserPrincipal> getAllExpensesManagers() {
         return
                 userPrincipalRepo.findByExpensesManagerAuthority();
+    }
+
+    public UserPrincipal getUserById(Long id) {
+        return userPrincipalRepo.findById(id)
+                .orElse(null);
     }
 
     @Override

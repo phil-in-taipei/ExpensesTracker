@@ -26,6 +26,7 @@
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Age</th>
+            <th scope="col">Delete User</th>
           </tr>
           </thead>
           <tbody>
@@ -35,6 +36,12 @@
             </td>
             <td th:text="${user.userMeta.email}"></td>
             <td th:text="${user.userMeta.age}"></td>
+            <td>
+              <a th:href="${'/delete-user/' + user.getId()}">
+                Remove
+              </a>
+            </td>
+
           </tr>
           </tbody>
         </table>
