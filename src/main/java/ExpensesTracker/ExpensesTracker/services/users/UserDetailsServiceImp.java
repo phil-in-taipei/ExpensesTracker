@@ -66,6 +66,11 @@ public class UserDetailsServiceImp implements UserDetailsService {
         return userPrincipalRepo.save(newUser);
     }
 
+    public List<UserPrincipal> getAllExpensesManagers() {
+        return
+                userPrincipalRepo.findByExpensesManagerAuthority();
+    }
+
     @Override
     public UserPrincipal loadUserByUsername(String username) throws UsernameNotFoundException {
         return userPrincipalRepo.findByUsername(username).orElseThrow(() ->
