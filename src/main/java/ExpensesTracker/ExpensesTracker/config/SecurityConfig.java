@@ -21,7 +21,9 @@ public class SecurityConfig {
                                 "/js/**", "/css/**",
                                 "/img/**", "/webjars/**").permitAll()
                         .antMatchers("/expenses-tracker-users").hasRole("ADMIN")
-                        //.antMatchers("/maintenance").hasRole("MAINTENANCE")
+                        .antMatchers("/create-bank").hasRole("ADMIN")
+                        .antMatchers("/submit-bank").hasRole("ADMIN")
+                        //.antMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(login -> login

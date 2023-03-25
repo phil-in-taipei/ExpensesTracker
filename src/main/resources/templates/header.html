@@ -35,6 +35,18 @@
                aria-current="page" href="#">
               Expenses Tracker Users</a>
           </li>
+
+          <li sec:authorize="hasRole('ROLE_ADMIN')"  class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Banks
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a th:href="@{/create-bank}"  class="dropdown-item"
+                     href="#">Create Banks</a></li>
+              <li><a th:href="@{/banks}" class="dropdown-item"
+                     href="#">View Banks</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>

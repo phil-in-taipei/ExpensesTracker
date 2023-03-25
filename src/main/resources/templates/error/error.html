@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}"
+>
+<head>
+  <meta charset="UTF-8">
+  <title>Error Page</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+  <br />
+  <div class="container border rounded text-center bg-light align-middle">
+    <br />
+    <div align="center">
+      <h2>Sorry, there was an error!</h2>
+      <h3 th:text="${message}"></h3>
+    </div>
+  </div>
+</div>
+</body>
+</html>
