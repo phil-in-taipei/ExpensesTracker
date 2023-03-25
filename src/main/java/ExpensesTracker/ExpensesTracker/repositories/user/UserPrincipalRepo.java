@@ -15,7 +15,5 @@ public interface UserPrincipalRepo extends JpaRepository<UserPrincipal, Long> {
     // note: this will only work as long as the id for the expenses manager role in db is 3
     @Query(value = "SELECT * FROM users u INNER JOIN user_authority_join_table ua ON u.id = ua.user_id "
             + "INNER JOIN authorities a ON ua.authority_id = a.id WHERE a.id = 3", nativeQuery = true)
-    //@Query(value = "SELECT * FROM users u INNER JOIN users_authorities ua ON u.id = ua.user_principal_id "
-    //       + "INNER JOIN authorities a ON ua.authorities_id = a.id WHERE a.id = 3", nativeQuery = true)
     ArrayList<UserPrincipal> findByExpensesManagerAuthority();
 }
