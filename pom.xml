@@ -71,11 +71,16 @@
 			<artifactId>ehcache</artifactId>
 			<version>3.8.1</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.github.wimdeblauwe/htmx-spring-boot-thymeleaf -->
+		<!-- https://mvnrepository.com/artifact/io.github.wimdeblauwe/htmx-spring-boot-thymeleaf
 		<dependency>
 			<groupId>io.github.wimdeblauwe</groupId>
 			<artifactId>htmx-spring-boot-thymeleaf</artifactId>
 			<version>1.0.0</version>
+		</dependency> -->
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>htmx.org</artifactId>
+			<version>1.8.6</version>
 		</dependency>
 		<dependency>
 			<groupId>com.mysql</groupId>
