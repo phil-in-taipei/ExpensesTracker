@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
+<head>
+    <title>Create Savings Account</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <br />
+    <div class="container border rounded text-center">
+        <div class="mt-4 p-5 rounded bg-light">
+            <h1>Create Savings Account</h1>
+            <form action="#" th:action="@{/submit-savings-account}" method="post" th:object="${savingsAccount}">
+                <hr />
+                <input type="hidden" th:name="user" th:value="${user.id}"/>
+                <div class="form-control bg-light">
+                    <div class="form-control">
+                        <label>Bank Name</label>
+                        <div>
+                            <select class="form-select" th:name="bank">
+                                <option th:if="${banks.isEmpty()}">None Available</option>
+                                <option th:each="bank : ${banks}" th:value="${bank.id}" th:text="${bank.bankName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+                <hr />
+                <div class="form-control bg-light">
+                    <label>Account Name</label>
+                    <div>
+                        <input type="text" id="accountName" class="form-control"
+                               th:field="*{accountName}" required>
+                    </div>
+                </div>
+                <hr />
+                <div class="d-grid gap-2 col-6 mx-auto bg-light">
+                    <input class="btn btn-primary" type="submit" value="Submit"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br />
+</div>
+</body>
+</html>

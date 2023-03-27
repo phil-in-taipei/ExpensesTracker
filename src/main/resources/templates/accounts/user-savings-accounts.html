@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Banks</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <br />
+    <div class="container text-center">
+        <div class="container border rounded bg-light">
+            <br />
+            <h2>Banks</h2>
+            <hr />
+            <br />
+            <div th:if="${savingsAccounts.size() > 0}"
+                 class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Bank Name</th>
+                        <th scope="col">Account Name</th>
+                        <th scope="col">Balance</th>
+                        <!--<th scope="col">Delete</th> -->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="account : ${savingsAccounts}">
+                        <td th:text="${account.id}"></td>
+                        <td th:text="${account.bank.bankName}"></td>
+                        <td th:text="${account.accountName}"></td>
+                        <td th:text="${account.accountBalance}"></td>
+                        <!--<td>
+                            <a th:href="@{'/delete-savings-account/' + ${account.id}}">
+                                Delete</a>
+                        </td> -->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:unless="${savingsAccounts.size() > 0}"
+                 class="container border rounded text-center bg-light">
+                <br />
+                <h3>You currently have no savings accounts</h3>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
