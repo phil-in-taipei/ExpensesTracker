@@ -1,11 +1,18 @@
 package ExpensesTracker.ExpensesTracker.models.income;
 
 import ExpensesTracker.ExpensesTracker.models.accounts.SavingsAccount;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Entity
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Deposit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

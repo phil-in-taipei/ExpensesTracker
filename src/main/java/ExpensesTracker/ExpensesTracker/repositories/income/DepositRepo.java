@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface DepositRepo extends JpaRepository<Deposit, Long> {
-    List<SavingsAccount> findAllByUserIdOrderByTimeDsc(Long id);
+    List<SavingsAccount> findAllBySavingsAccount_User_IdOrderByTimeDesc(Long id);
 }
