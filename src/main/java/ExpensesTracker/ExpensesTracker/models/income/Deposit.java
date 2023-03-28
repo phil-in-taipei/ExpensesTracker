@@ -10,6 +10,8 @@ public class Deposit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(nullable = false)
     private  BigDecimal depositAmount;
 
     @ManyToOne(optional = false)
@@ -20,6 +22,7 @@ public class Deposit {
     @JoinColumn
     private SavingsAccount savingsAccount;
 
+    @Column(nullable = false)
     private LocalDateTime time;
 
 }

@@ -27,5 +27,4 @@ public class UserMeta {
     @Column(nullable = false)
     private Integer age;
 
-    // here add two-way relationship for deletion with user?
 }
