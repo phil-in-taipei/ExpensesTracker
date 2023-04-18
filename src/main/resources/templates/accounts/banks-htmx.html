@@ -42,9 +42,9 @@
           </td>
           <td class="w-25">
             <button _="on htmx:afterRequest put '' into #bankName.value"
-                    id="mon" hx-include="#bankName"
+                    id="btn" hx-include="#bankName"
                     th:attr="hx-post=@{/create-bank-htmx}"
-                    hx-target="#new-bank" hx-swap="beforeend"
+                    hx-target="#new-bank" hx-swap="innerHTML swap:1s"
                     hx-trigger="click" class="btn btn-primary">Add
             </button>
           </td>

@@ -18,6 +18,11 @@ public class SavingsAccountService {
                 .findAllByUserIdOrderByBank_BankNameAsc(userId);
     }
 
+    public List<SavingsAccount> getAllAccountsByUserUsername(String username) {
+        return savingAccountsRepo
+                .findAllByUserUsernameOrderByBank_BankNameAsc(username);
+    }
+
     @Transactional
     public void saveSavingsAccount(SavingsAccount savingsAccount)
             throws IllegalArgumentException {

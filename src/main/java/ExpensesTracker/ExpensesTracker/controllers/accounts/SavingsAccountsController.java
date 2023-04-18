@@ -6,6 +6,7 @@ import ExpensesTracker.ExpensesTracker.services.accounts.BankService;
 import ExpensesTracker.ExpensesTracker.services.accounts.SavingsAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -54,9 +55,16 @@ public class SavingsAccountsController {
 
     @GetMapping("/user-savings-accounts")
     public String showAllUsersAccounts(Authentication authentication, Model model) {
-        UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
+        //UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
+        //System.out.println("This is the user obj used to make queries: " + user);
+        System.out.println("Attempting to get raw user details obj:");
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        System.out.println("User details: " + userDetails);
+        System.out.println("User has authorities: " + userDetails.getAuthorities());
+        //List<SavingsAccount> savingsAccounts = savingsAccountService
+        //        .getAllAccountsByUserId(userDetails.getId());
         List<SavingsAccount> savingsAccounts = savingsAccountService
-                .getAllAccountsByUserId(user.getId());
+                .getAllAccountsByUserUsername(userDetails.getUsername());
         model.addAttribute("savingsAccounts", savingsAccounts);
         return "accounts/user-savings-accounts";
     }

@@ -8,4 +8,6 @@ import java.util.List;
 @Repository
 public interface SavingAccountsRepo extends JpaRepository<SavingsAccount, Long> {
     List<SavingsAccount> findAllByUserIdOrderByBank_BankNameAsc(Long id);
+
+    List<SavingsAccount>  findAllByUserUsernameOrderByBank_BankNameAsc(String username);
 }
