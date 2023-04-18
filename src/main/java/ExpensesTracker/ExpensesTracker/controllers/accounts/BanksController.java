@@ -23,8 +23,8 @@ public class BanksController {
 
     @GetMapping("/banks-htmx")
     public String banksHtmx(Model model) {
-        Bank bank = new Bank();
-        model.addAttribute("bank", bank);
+        //Bank bank = new Bank();
+        //model.addAttribute("bank", bank);
         List<Bank> banks = bankService.getAllBanks();
         model.addAttribute("banks", banks);
         return "accounts/banks-htmx";
@@ -38,7 +38,12 @@ public class BanksController {
     }
 
     @PostMapping(path = "/create-bank-htmx")
-    public String create(@RequestParam("bank") Bank bank, Model model) {
+    public String create(
+            //@RequestParam("bank") Bank bank, Model model) {
+            @RequestParam("bankName") String bankName, Model model) {
+        Bank bank = new Bank();
+        System.out.println("This is the submitted bank name: " + bankName);
+        bank.setBankName(bankName);
         model.addAttribute("bank", bank);
         System.out.println("Now Submitting bank via htmx");
         System.out.println(bank);
@@ -51,7 +56,7 @@ public class BanksController {
                             + e.getMessage());
             return "error/error";
         }
-        return "banks-htmx :: banks-htmx";
+        return "accounts/banks-htmx :: accounts/banks-htmx";
     }
 
 
