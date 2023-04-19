@@ -13,6 +13,10 @@ public class SavingsAccountService {
     @Autowired
     SavingAccountsRepo savingAccountsRepo;
 
+    public void deleteSavingsAccount(Long id) {
+        savingAccountsRepo.deleteById(id);
+    }
+
     public List<SavingsAccount> getAllAccountsByUserId(Long userId) {
         return savingAccountsRepo
                 .findAllByUserIdOrderByBank_BankNameAsc(userId);
@@ -21,6 +25,11 @@ public class SavingsAccountService {
     public List<SavingsAccount> getAllAccountsByUserUsername(String username) {
         return savingAccountsRepo
                 .findAllByUserUsernameOrderByBank_BankNameAsc(username);
+    }
+
+    public SavingsAccount getSavingsAccount(Long id) {
+        return savingAccountsRepo.findById(id)
+                .orElse(null);
     }
 
     @Transactional

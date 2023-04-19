@@ -36,6 +36,20 @@ public class SavingsAccountsController {
         return "accounts/create-savings-account";
     }
 
+    @RequestMapping("/delete-savings-account/{accountId}")
+    public String deleteSavingsAccount(
+            @PathVariable(name = "accountId")
+            Long accountId, Model model) {
+        if (savingsAccountService.getSavingsAccount(accountId) == null) {
+            model.addAttribute("message",
+                    "Cannot delete, savings account with id: "
+                            + accountId + " does not exist.");
+            return "error/error";
+        }
+        savingsAccountService.deleteSavingsAccount(accountId);
+        return "redirect:/user-savings-accounts";
+    }
+
     @PostMapping("/submit-savings-account")
     public String saveNewSavingsAccount(
             @ModelAttribute("savingsAccount")
