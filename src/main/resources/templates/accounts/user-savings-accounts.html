@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Banks</title>
+    <title>Savings Accounts</title>
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
@@ -14,7 +14,8 @@
     <div class="container text-center">
         <div class="container border rounded bg-light">
             <br />
-            <h2>Banks</h2>
+            <h2 th:text="${user.username}"></h2>
+            <h2>Savings Accounts</h2>
             <hr />
             <br />
             <div th:if="${savingsAccounts.size() > 0}"

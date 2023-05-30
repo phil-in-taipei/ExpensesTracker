@@ -1,10 +1,12 @@
 package ExpensesTracker.ExpensesTracker;
 import ExpensesTracker.ExpensesTracker.models.accounts.Bank;
+import ExpensesTracker.ExpensesTracker.models.currency.Currency;
 import ExpensesTracker.ExpensesTracker.models.user.Authority;
 import ExpensesTracker.ExpensesTracker.models.user.AuthorityEnum;
 import ExpensesTracker.ExpensesTracker.models.user.forms.UserRegistrationForm;
 import ExpensesTracker.ExpensesTracker.models.user.UserPrincipal;
 import ExpensesTracker.ExpensesTracker.repositories.accounts.BankRepo;
+import ExpensesTracker.ExpensesTracker.repositories.currency.CurrencyRepo;
 import ExpensesTracker.ExpensesTracker.repositories.user.AuthorityRepo;
 import ExpensesTracker.ExpensesTracker.repositories.user.UserPrincipalRepo;
 import ExpensesTracker.ExpensesTracker.services.users.UserDetailsServiceImp;
@@ -23,6 +25,9 @@ public class ExpensesTrackerApplicationTest implements CommandLineRunner {
 
     @Autowired
     BankRepo bankRepo;
+
+    @Autowired
+    CurrencyRepo currencyRepo;
 
     @Autowired
     private UserPrincipalRepo userPrincipalRepo;
@@ -45,6 +50,14 @@ public class ExpensesTrackerApplicationTest implements CommandLineRunner {
                     .build();
             bankRepo.save(testBank);
         }
+
+        if (currencyRepo.findAll().isEmpty()) {
+            Currency ntd = Currency.builder()
+                    .id(1L)
+                    .currencyCode("TCC")
+                    .currencyName("Test Currency").build();
+        }
+
         if (userPrincipalRepo.findAll().isEmpty()) {
             System.out.println("The user repo is empty");
             UserRegistrationForm expensesManagerUserRegistration = new UserRegistrationForm();

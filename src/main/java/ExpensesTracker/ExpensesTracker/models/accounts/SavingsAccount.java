@@ -1,4 +1,5 @@
 package ExpensesTracker.ExpensesTracker.models.accounts;
+import ExpensesTracker.ExpensesTracker.models.currency.Currency;
 import ExpensesTracker.ExpensesTracker.models.user.UserPrincipal;
 import lombok.*;
 
@@ -20,13 +21,16 @@ public class SavingsAccount {
     @Column(nullable = false)
     BigDecimal accountBalance;
 
-    // later possibly foreign key relation to currency
-    // (with link to external api for conversion)
+    @Column(nullable = false)
+    private String accountName;
+
     @ManyToOne(optional = false)
     private Bank bank;
 
-    @Column(nullable = false)
-    private String accountName;
+    @ManyToOne(optional = false)
+    @JoinColumn
+    private Currency currency;
+
 
     @ManyToOne(optional = false)
     @JoinColumn

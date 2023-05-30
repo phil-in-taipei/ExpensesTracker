@@ -1,7 +1,9 @@
 package ExpensesTracker.ExpensesTracker;
 
+import ExpensesTracker.ExpensesTracker.models.currency.Currency;
 import ExpensesTracker.ExpensesTracker.models.user.Authority;
 import ExpensesTracker.ExpensesTracker.models.user.AuthorityEnum;
+import ExpensesTracker.ExpensesTracker.repositories.currency.CurrencyRepo;
 import ExpensesTracker.ExpensesTracker.repositories.user.AuthorityRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -15,6 +17,9 @@ public class ExpensesTrackerApplication implements CommandLineRunner {
 
 	@Autowired
 	private AuthorityRepo authorityRepo;
+
+	@Autowired
+	private CurrencyRepo currencyRepo;
 
 	public static void main(String[] args) {
 
@@ -34,6 +39,22 @@ public class ExpensesTrackerApplication implements CommandLineRunner {
 			Authority mainAuth = Authority.builder().id(3L)
 					.authority(AuthorityEnum.ROLE_EXPENSES_MANAGER).build();
 			authorityRepo.saveAll(Arrays.asList(userAuth, adminAuth, mainAuth));
+		}
+
+		if (currencyRepo.findAll().isEmpty()) {
+			Currency ntd = Currency.builder()
+					.id(1L)
+					.currencyCode("NTD")
+					.currencyName("Taiwan New Dollar").build();
+			Currency usd = Currency.builder()
+					.id(2L)
+					.currencyCode("USD")
+					.currencyName("United States Dollar").build();
+			Currency eur = Currency.builder()
+					.id(3L)
+					.currencyCode("EUR")
+					.currencyName("Euro Member Countries").build();
+			currencyRepo.saveAll(Arrays.asList(ntd, usd, eur));
 		}
 	}
 

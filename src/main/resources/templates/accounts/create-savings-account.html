@@ -31,6 +31,19 @@
                 </div>
                 <hr />
                 <div class="form-control bg-light">
+                    <div class="form-control">
+                        <label>Currency</label>
+                        <div>
+                            <select class="form-select" th:name="currency">
+                                <option th:if="${currencies.isEmpty()}">None Available</option>
+                                <option th:each="currency : ${currencies}" th:value="${currency.id}" th:text="${currency.currencyName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+                <hr />
+                <div class="form-control bg-light">
                     <label>Account Name</label>
                     <div>
                         <input type="text" id="accountName" class="form-control"

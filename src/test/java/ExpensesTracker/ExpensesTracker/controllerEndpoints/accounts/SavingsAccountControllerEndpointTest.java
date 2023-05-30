@@ -2,9 +2,11 @@ package ExpensesTracker.ExpensesTracker.controllerEndpoints.accounts;
 import ExpensesTracker.ExpensesTracker.ExpensesTrackerApplication;
 import ExpensesTracker.ExpensesTracker.models.accounts.Bank;
 import ExpensesTracker.ExpensesTracker.models.accounts.SavingsAccount;
+import ExpensesTracker.ExpensesTracker.models.currency.Currency;
 import ExpensesTracker.ExpensesTracker.models.user.UserPrincipal;
 import ExpensesTracker.ExpensesTracker.repositories.accounts.BankRepo;
 import ExpensesTracker.ExpensesTracker.repositories.accounts.SavingAccountsRepo;
+import ExpensesTracker.ExpensesTracker.repositories.currency.CurrencyRepo;
 import ExpensesTracker.ExpensesTracker.repositories.user.UserPrincipalRepo;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -40,6 +42,9 @@ public class SavingsAccountControllerEndpointTest {
 
     @Autowired
     BankRepo bankRepo;
+
+    @Autowired
+    CurrencyRepo currencyRepo;
 
     @Autowired
     SavingAccountsRepo savingsAccountsRepo;
@@ -83,11 +88,13 @@ public class SavingsAccountControllerEndpointTest {
     public void saveNewSavingsAccount()
             throws Exception {
         Bank testBank = bankRepo.findAll().get(0);
+        Currency testCurrency = currencyRepo.findAll().get(0);
         UserPrincipal testUser = userPrincipalRepo.findAll().get(0);
         MockHttpServletRequestBuilder createTask = post("/submit-savings-account")
                 .param("bank", String.valueOf(testBank.getId()))
                 .param("accountName", "Test Savings Account")
-                .param("user", String.valueOf(testUser.getId()));
+                .param("user", String.valueOf(testUser.getId()))
+                .param("currency", String.valueOf(testCurrency.getId()));
         mockMvc.perform(createTask)
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/user-savings-accounts"));

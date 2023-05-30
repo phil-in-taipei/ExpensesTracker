@@ -1,9 +1,12 @@
 package ExpensesTracker.ExpensesTracker.controllers.accounts;
 import ExpensesTracker.ExpensesTracker.models.accounts.Bank;
 import ExpensesTracker.ExpensesTracker.models.accounts.SavingsAccount;
+import ExpensesTracker.ExpensesTracker.models.currency.Currency;
 import ExpensesTracker.ExpensesTracker.models.user.UserPrincipal;
 import ExpensesTracker.ExpensesTracker.services.accounts.BankService;
 import ExpensesTracker.ExpensesTracker.services.accounts.SavingsAccountService;
+import ExpensesTracker.ExpensesTracker.services.currency.CurrencyService;
+import ExpensesTracker.ExpensesTracker.services.users.UserDetailsServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,18 +24,28 @@ public class SavingsAccountsController {
     BankService bankService;
 
     @Autowired
+    CurrencyService currencyService;
+
+    @Autowired
     SavingsAccountService savingsAccountService;
+
+    @Autowired
+    UserDetailsServiceImp userService;
+
+
 
     @GetMapping("/create-savings-account")
     public String showSubmitSavingsAccountPage(
             Authentication authentication, Model model) {
-        UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        UserPrincipal user = userService.loadUserByUsername(userDetails.getUsername());
         SavingsAccount savingsAccount = new SavingsAccount();
         model.addAttribute("user", user);
         model.addAttribute("savingsAccount", savingsAccount);
         List<Bank> banks = bankService.getAllBanks();
         model.addAttribute("banks", banks);
-
+        List<Currency> currencies = currencyService.getAllCurrencies();
+        model.addAttribute("currencies", currencies);
         return "accounts/create-savings-account";
     }
 
@@ -75,11 +88,11 @@ public class SavingsAccountsController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         System.out.println("User details: " + userDetails);
         System.out.println("User has authorities: " + userDetails.getAuthorities());
-        //List<SavingsAccount> savingsAccounts = savingsAccountService
-        //        .getAllAccountsByUserId(userDetails.getId());
+        UserPrincipal user = userService.loadUserByUsername(userDetails.getUsername());
         List<SavingsAccount> savingsAccounts = savingsAccountService
                 .getAllAccountsByUserUsername(userDetails.getUsername());
         model.addAttribute("savingsAccounts", savingsAccounts);
+        model.addAttribute("user", user);
         return "accounts/user-savings-accounts";
     }
 
