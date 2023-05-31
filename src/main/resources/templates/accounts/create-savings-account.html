@@ -16,12 +16,12 @@
             <h1>Create Savings Account</h1>
             <form action="#" th:action="@{/submit-savings-account}" method="post" th:object="${savingsAccount}">
                 <hr />
-                <input type="hidden" th:name="user" th:value="${user.id}"/>
+                <!--<input type="hidden" th:name="user" th:value="${user.id}"/> -->
                 <div class="form-control bg-light">
                     <div class="form-control">
                         <label>Bank Name</label>
                         <div>
-                            <select class="form-select" th:name="bank">
+                            <select class="form-select" th:name="bankId">
                                 <option th:if="${banks.isEmpty()}">None Available</option>
                                 <option th:each="bank : ${banks}" th:value="${bank.id}" th:text="${bank.bankName}"></option>
                             </select>
@@ -34,7 +34,7 @@
                     <div class="form-control">
                         <label>Currency</label>
                         <div>
-                            <select class="form-select" th:name="currency">
+                            <select class="form-select" th:name="currencyId">
                                 <option th:if="${currencies.isEmpty()}">None Available</option>
                                 <option th:each="currency : ${currencies}" th:value="${currency.id}" th:text="${currency.currencyName}"></option>
                             </select>

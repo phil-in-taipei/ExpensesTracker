@@ -1,6 +1,7 @@
 package ExpensesTracker.ExpensesTracker.controllers.accounts;
 import ExpensesTracker.ExpensesTracker.models.accounts.Bank;
 import ExpensesTracker.ExpensesTracker.models.accounts.SavingsAccount;
+import ExpensesTracker.ExpensesTracker.models.accounts.forms.SavingsAccountForm;
 import ExpensesTracker.ExpensesTracker.models.currency.Currency;
 import ExpensesTracker.ExpensesTracker.models.user.UserPrincipal;
 import ExpensesTracker.ExpensesTracker.services.accounts.BankService;
@@ -37,10 +38,10 @@ public class SavingsAccountsController {
     @GetMapping("/create-savings-account")
     public String showSubmitSavingsAccountPage(
             Authentication authentication, Model model) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        UserPrincipal user = userService.loadUserByUsername(userDetails.getUsername());
-        SavingsAccount savingsAccount = new SavingsAccount();
-        model.addAttribute("user", user);
+        //UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        //UserPrincipal user = userService.loadUserByUsername(userDetails.getUsername());
+        SavingsAccountForm savingsAccount = new SavingsAccountForm();
+        //model.addAttribute("user", user);
         model.addAttribute("savingsAccount", savingsAccount);
         List<Bank> banks = bankService.getAllBanks();
         model.addAttribute("banks", banks);
@@ -66,9 +67,19 @@ public class SavingsAccountsController {
     @PostMapping("/submit-savings-account")
     public String saveNewSavingsAccount(
             @ModelAttribute("savingsAccount")
-            SavingsAccount savingsAccount, Model model) {
+            SavingsAccountForm savingsAccountForm, Model model,
+            Authentication authentication) {
         try {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            UserPrincipal user = userService.loadUserByUsername(userDetails.getUsername());
+            Bank bank = bankService.getBank(savingsAccountForm.getBankId());
+            Currency currency = currencyService.getCurrency(savingsAccountForm.getCurrencyId());
+            SavingsAccount savingsAccount = new SavingsAccount();
             savingsAccount.setAccountBalance(BigDecimal.valueOf(0.00));
+            savingsAccount.setBank(bank);
+            savingsAccount.setCurrency(currency);
+            savingsAccount.setAccountName(savingsAccountForm.getAccountName());
+            savingsAccount.setUser(user);
             savingsAccountService.saveSavingsAccount(savingsAccount);
         } catch (IllegalArgumentException e) {
             model.addAttribute(

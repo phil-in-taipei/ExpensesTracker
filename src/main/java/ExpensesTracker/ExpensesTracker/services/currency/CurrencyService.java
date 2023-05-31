@@ -18,6 +18,10 @@ public class CurrencyService {
         return currencyRepo.findAllByOrderByCurrencyCode();
     }
 
+    public Currency getCurrency(Long id) {
+        return currencyRepo.findById(id)
+                .orElse(null);
+    }
     @Transactional
     public void saveCurrency(Currency currency)
             throws IllegalArgumentException {
