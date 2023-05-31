@@ -52,10 +52,11 @@ public class ExpensesTrackerApplicationTest implements CommandLineRunner {
         }
 
         if (currencyRepo.findAll().isEmpty()) {
-            Currency ntd = Currency.builder()
+            Currency testCurrency = Currency.builder()
                     .id(1L)
                     .currencyCode("TCC")
                     .currencyName("Test Currency").build();
+            currencyRepo.save(testCurrency);
         }
 
         if (userPrincipalRepo.findAll().isEmpty()) {

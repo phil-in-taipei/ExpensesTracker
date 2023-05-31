@@ -33,8 +33,8 @@ public class SavingsAccountService {
     }
 
     @Transactional
-    public void saveSavingsAccount(SavingsAccount savingsAccount)
+    public SavingsAccount saveSavingsAccount(SavingsAccount savingsAccount)
             throws IllegalArgumentException {
-        savingAccountsRepo.save(savingsAccount);
+        return savingAccountsRepo.save(savingsAccount);
     }
 }

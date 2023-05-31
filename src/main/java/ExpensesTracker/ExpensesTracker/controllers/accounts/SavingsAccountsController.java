@@ -82,12 +82,7 @@ public class SavingsAccountsController {
 
     @GetMapping("/user-savings-accounts")
     public String showAllUsersAccounts(Authentication authentication, Model model) {
-        //UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
-        //System.out.println("This is the user obj used to make queries: " + user);
-        System.out.println("Attempting to get raw user details obj:");
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        System.out.println("User details: " + userDetails);
-        System.out.println("User has authorities: " + userDetails.getAuthorities());
         UserPrincipal user = userService.loadUserByUsername(userDetails.getUsername());
         List<SavingsAccount> savingsAccounts = savingsAccountService
                 .getAllAccountsByUserUsername(userDetails.getUsername());

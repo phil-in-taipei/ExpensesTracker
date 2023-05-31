@@ -1,6 +1,7 @@
 package ExpensesTracker.ExpensesTracker.services.accounts;
 
 import ExpensesTracker.ExpensesTracker.models.accounts.Bank;
+import ExpensesTracker.ExpensesTracker.models.accounts.SavingsAccount;
 import ExpensesTracker.ExpensesTracker.repositories.accounts.BankRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,22 @@ public class BankService {
     @Autowired
     BankRepo bankRepo;
 
+    public void deleteBank(Long id) {
+        bankRepo.deleteById(id);
+    }
+
     public List<Bank> getAllBanks() {
         return bankRepo.findAllByOrderByBankName();
     }
 
+    public Bank getBank(Long id) {
+        return bankRepo.findById(id)
+                .orElse(null);
+    }
+
     @Transactional
-    public void saveBank(Bank bank)
+    public Bank saveBank(Bank bank)
             throws IllegalArgumentException {
-        bankRepo.save(bank);
+        return bankRepo.save(bank);
     }
 }

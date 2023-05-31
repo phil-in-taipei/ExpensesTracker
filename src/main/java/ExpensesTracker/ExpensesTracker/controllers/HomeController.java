@@ -1,5 +1,7 @@
 package ExpensesTracker.ExpensesTracker.controllers;
 import ExpensesTracker.ExpensesTracker.models.user.UserPrincipal;
+import ExpensesTracker.ExpensesTracker.services.users.UserDetailsServiceImp;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,9 @@ import java.util.List;
 @Controller
 public class HomeController {
 
+    @Autowired
+    UserDetailsServiceImp userService;
+
     @GetMapping("/")
     public String homePage(Model model) {
         return "index";
@@ -21,7 +26,8 @@ public class HomeController {
     @GetMapping("/landing")
     public String landingPage(Authentication authentication, Model model) {
         // get user info
-        UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        UserPrincipal user = userService.loadUserByUsername(userDetails.getUsername());
         model.addAttribute("user", user);
         return "landing";
     }
