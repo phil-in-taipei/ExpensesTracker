@@ -28,7 +28,6 @@ public class ExpensesTrackerApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-
 		if (authorityRepo.findAll().isEmpty()) {
 			// constructs the Authorities for the different user types and
 			// saves to database. This is a key step before creating any users

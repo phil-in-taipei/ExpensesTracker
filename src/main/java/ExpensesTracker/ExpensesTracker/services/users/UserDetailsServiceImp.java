@@ -12,6 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +36,11 @@ public class UserDetailsServiceImp implements UserDetailsService {
     @Autowired
     UserMetaRepo userMetaRepo;
 
+    public boolean confirmPasswordsMatch(UserRegistrationForm userRegistration) {
+        return Objects.equals(userRegistration.getPassword(),
+                userRegistration.getPasswordConfirmation());
+    }
+
     public UserPrincipal createNewAdminUser(UserRegistrationForm userRegistration) {
         // the ids of the different authorities are
         // set in the bootstrapping class
@@ -51,7 +59,8 @@ public class UserDetailsServiceImp implements UserDetailsService {
         return userPrincipalRepo.save(newUser);
     }
 
-    public UserPrincipal createNewExpensesManagerUser(UserRegistrationForm userRegistration) {
+    public UserPrincipal createNewExpensesManagerUser(UserRegistrationForm userRegistration)
+        throws SQLIntegrityConstraintViolationException {
         // the ids of the different authorities are
         // set in the bootstrapping class
         // these are the two authorities given to expenses managers
@@ -87,6 +96,24 @@ public class UserDetailsServiceImp implements UserDetailsService {
         userPrincipalRepo.deleteById(id);
     }
 
+    // this is to clean up users after testing
+    public void deleteUserPrincipalByUsername(String username) {
+        UserPrincipal user = userPrincipalRepo.findByUsername(username).get();
+        List<Authority> authorities = user.getAuthorities();
+        while(authorities.iterator().hasNext())
+        {
+            Authority authority = authorities.iterator().next();
+            Set<UserPrincipal> users = authority.getUsers();
+            users.remove(user);
+            authority.setUsers(users);
+            authorityRepo.save(authority);
+            authorities.remove(authority);
+        }
+        user.setAuthorities(authorities);
+        userPrincipalRepo.save(user);
+        userPrincipalRepo.deleteByUsername(username);
+    }
+
     public List<UserPrincipal> getAllExpensesManagers() {
         return
                 userPrincipalRepo.findByExpensesManagerAuthority();
@@ -102,5 +129,14 @@ public class UserDetailsServiceImp implements UserDetailsService {
         return userPrincipalRepo.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("User not found with username or email : " + username)
         );
+    }
+
+    public boolean usernameAlreadyExists(String username) {
+        try {
+            UserPrincipal existentUser = loadUserByUsername(username);
+            return true;
+        } catch (UsernameNotFoundException e) {
+            return false;
+        }
     }
 }
