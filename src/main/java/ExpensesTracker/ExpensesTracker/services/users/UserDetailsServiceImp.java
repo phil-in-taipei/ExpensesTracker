@@ -1,4 +1,5 @@
 package ExpensesTracker.ExpensesTracker.services.users;
+import ExpensesTracker.ExpensesTracker.logging.Loggable;
 import ExpensesTracker.ExpensesTracker.models.user.Authority;
 import ExpensesTracker.ExpensesTracker.models.user.UserMeta;
 import ExpensesTracker.ExpensesTracker.models.user.UserPrincipal;
@@ -36,11 +37,13 @@ public class UserDetailsServiceImp implements UserDetailsService {
     @Autowired
     UserMetaRepo userMetaRepo;
 
+    @Loggable
     public boolean confirmPasswordsMatch(UserRegistrationForm userRegistration) {
         return Objects.equals(userRegistration.getPassword(),
                 userRegistration.getPasswordConfirmation());
     }
 
+    @Loggable
     public UserPrincipal createNewAdminUser(UserRegistrationForm userRegistration) {
         // the ids of the different authorities are
         // set in the bootstrapping class
@@ -59,6 +62,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
         return userPrincipalRepo.save(newUser);
     }
 
+    @Loggable
     public UserPrincipal createNewExpensesManagerUser(UserRegistrationForm userRegistration)
         throws SQLIntegrityConstraintViolationException {
         // the ids of the different authorities are
@@ -78,6 +82,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
         return userPrincipalRepo.save(newUser);
     }
 
+    @Loggable
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void deleteUserPrincipal(long id) {
         UserPrincipal user = userPrincipalRepo.findById(id).get();
@@ -97,6 +102,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
     }
 
     // this is to clean up users after testing
+    @Loggable
     public void deleteUserPrincipalByUsername(String username) {
         UserPrincipal user = userPrincipalRepo.findByUsername(username).get();
         List<Authority> authorities = user.getAuthorities();
@@ -114,16 +120,19 @@ public class UserDetailsServiceImp implements UserDetailsService {
         userPrincipalRepo.deleteByUsername(username);
     }
 
+    @Loggable
     public List<UserPrincipal> getAllExpensesManagers() {
         return
                 userPrincipalRepo.findByExpensesManagerAuthority();
     }
 
+    @Loggable
     public UserPrincipal getUserById(Long id) {
         return userPrincipalRepo.findById(id)
                 .orElse(null);
     }
 
+    @Loggable
     @Override
     public UserPrincipal loadUserByUsername(String username) throws UsernameNotFoundException {
         return userPrincipalRepo.findByUsername(username).orElseThrow(() ->
@@ -131,6 +140,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
         );
     }
 
+    @Loggable
     public boolean usernameAlreadyExists(String username) {
         try {
             UserPrincipal existentUser = loadUserByUsername(username);

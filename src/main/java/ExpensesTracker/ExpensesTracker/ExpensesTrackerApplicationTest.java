@@ -112,7 +112,7 @@ public class ExpensesTrackerApplicationTest implements CommandLineRunner {
             System.out.print("*********Created Admin User: "
                     + adminUser1.toString() + "**************");
         }
-        userService.deleteUserPrincipalByUsername("Test Expenses Manager User2");
+        //userService.deleteUserPrincipalByUsername("Test Expenses Manager User2");
     }
 }
 

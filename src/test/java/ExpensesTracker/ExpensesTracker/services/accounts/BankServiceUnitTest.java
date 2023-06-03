@@ -1,7 +1,6 @@
 package ExpensesTracker.ExpensesTracker.services.accounts;
 import ExpensesTracker.ExpensesTracker.ExpensesTrackerApplication;
 import ExpensesTracker.ExpensesTracker.models.accounts.Bank;
-import ExpensesTracker.ExpensesTracker.models.accounts.SavingsAccount;
 import ExpensesTracker.ExpensesTracker.repositories.accounts.BankRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,9 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes= ExpensesTrackerApplication.class)
+@SpringBootTest(classes=ExpensesTrackerApplication.class)
 @ActiveProfiles("test")
-
 public class BankServiceUnitTest {
 
     @MockBean

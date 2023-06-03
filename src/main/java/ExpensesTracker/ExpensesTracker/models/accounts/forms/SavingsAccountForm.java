@@ -1,9 +1,9 @@
 package ExpensesTracker.ExpensesTracker.models.accounts.forms;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @Setter
 @NoArgsConstructor
 public class SavingsAccountForm {
