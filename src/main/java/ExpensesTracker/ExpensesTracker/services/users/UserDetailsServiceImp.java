@@ -37,6 +37,9 @@ public class UserDetailsServiceImp implements UserDetailsService {
     @Autowired
     UserMetaRepo userMetaRepo;
 
+
+    // this is used during registration to confirm that the
+    // two passwords submitted are the same
     @Loggable
     public boolean confirmPasswordsMatch(UserRegistrationForm userRegistration) {
         return Objects.equals(userRegistration.getPassword(),
@@ -44,7 +47,8 @@ public class UserDetailsServiceImp implements UserDetailsService {
     }
 
     @Loggable
-    public UserPrincipal createNewAdminUser(UserRegistrationForm userRegistration) {
+    public UserPrincipal createNewAdminUser(
+            UserRegistrationForm userRegistration) {
         // the ids of the different authorities are
         // set in the bootstrapping class
         // these are the two authorities given to admins
@@ -63,8 +67,9 @@ public class UserDetailsServiceImp implements UserDetailsService {
     }
 
     @Loggable
-    public UserPrincipal createNewExpensesManagerUser(UserRegistrationForm userRegistration)
-        throws SQLIntegrityConstraintViolationException {
+    public UserPrincipal createNewExpensesManagerUser(
+            UserRegistrationForm userRegistration)
+    {
         // the ids of the different authorities are
         // set in the bootstrapping class
         // these are the two authorities given to expenses managers
@@ -134,12 +139,17 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Loggable
     @Override
-    public UserPrincipal loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserPrincipal loadUserByUsername(String username)
+            throws UsernameNotFoundException {
         return userPrincipalRepo.findByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException("User not found with username or email : " + username)
+                new UsernameNotFoundException(
+                        "User not found with username or email : "
+                                + username)
         );
     }
 
+    // this is to test whether or not a username is available during registration
+    // to prevent database error due to unique constraint violation
     @Loggable
     public boolean usernameAlreadyExists(String username) {
         try {

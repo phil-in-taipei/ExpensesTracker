@@ -32,7 +32,7 @@ public class RegistrationController {
     public String submitRegisterForm(
             @ModelAttribute("userRegistration")
             UserRegistrationForm userRegistration,
-            Model model) throws SQLIntegrityConstraintViolationException {
+            Model model){
         // verifies that the passwords match prior to registration;
         // otherwise, redirects to registration failure page
         if (!userDetailsService.confirmPasswordsMatch(userRegistration)) {
@@ -51,20 +51,6 @@ public class RegistrationController {
         UserPrincipal createdUser = userDetailsService.createNewExpensesManagerUser(userRegistration);
         model.addAttribute("user", createdUser);
         return "auth/register-success";
-        /*
-        try {
-            UserPrincipal existentUser = userDetailsService
-                    .loadUserByUsername(userRegistration.getUsername());
-            model.addAttribute("errorMsg",
-                    "The username, " +
-                            existentUser.getUsername() +
-                            ", has already been taken. Please select another username");
-            return "auth/register-failure";
-        } catch (UsernameNotFoundException e) {
-            UserPrincipal createdUser = userDetailsService.createNewExpensesManagerUser(userRegistration);
-            model.addAttribute("user", createdUser);
-            return "auth/register-success";
-        } */
     }
 
     @Loggable
@@ -78,7 +64,8 @@ public class RegistrationController {
     @PostMapping("/register-admin")
     public String submitRegisterFormForAdmin(
             @ModelAttribute("userRegistration") UserRegistrationForm userRegistration,
-            Model model) {
+            Model model) throws
+            SQLIntegrityConstraintViolationException {
         // verifies that the passwords match prior to registration;
         // otherwise, redirects to registration failure page
         if (!Objects.equals(userRegistration.getPassword(),

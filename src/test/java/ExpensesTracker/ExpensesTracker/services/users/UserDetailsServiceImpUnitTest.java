@@ -1,14 +1,11 @@
 package ExpensesTracker.ExpensesTracker.services.users;
 import ExpensesTracker.ExpensesTracker.ExpensesTrackerApplication;
-import ExpensesTracker.ExpensesTracker.models.accounts.Bank;
 import ExpensesTracker.ExpensesTracker.models.user.Authority;
 import ExpensesTracker.ExpensesTracker.models.user.AuthorityEnum;
 import ExpensesTracker.ExpensesTracker.models.user.UserMeta;
 import ExpensesTracker.ExpensesTracker.models.user.UserPrincipal;
 import ExpensesTracker.ExpensesTracker.models.user.forms.UserRegistrationForm;
 import ExpensesTracker.ExpensesTracker.repositories.user.UserPrincipalRepo;
-import ExpensesTracker.ExpensesTracker.services.users.UserDetailsServiceImp;
-import ExpensesTracker.ExpensesTracker.ExpensesTrackerApplicationTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -81,7 +78,7 @@ public class UserDetailsServiceImpUnitTest {
     }
 
     @Test
-    public void testCreateNewAdminUser() {
+    public void testCreateNewAdminUserSuccess() {
         testUser.setAuthorities(authoritiesForAdminUser);
         when(userPrincipalRepo.save(any(UserPrincipal.class)))
                 .thenReturn(testUser);
@@ -90,8 +87,7 @@ public class UserDetailsServiceImpUnitTest {
     }
 
     @Test
-    public void testCreateNewExpensesManagerUser()
-            throws SQLIntegrityConstraintViolationException {
+    public void testCreateNewExpensesManagerUser() {
         when(userPrincipalRepo.save(any(UserPrincipal.class)))
                 .thenReturn(testUser);
         assertThat(userService.createNewExpensesManagerUser(userRegistration))
@@ -121,6 +117,7 @@ public class UserDetailsServiceImpUnitTest {
         assertThat(userService.getUserById(1L))
                 .isEqualTo(null);
     }
+
     @Test
     public void testGetUserByIdSuccessBehavior() {
         when(userPrincipalRepo.findById(anyLong()))
@@ -130,21 +127,20 @@ public class UserDetailsServiceImpUnitTest {
     }
 
     @Test
+    public void testLoadUserByUsernameFailureBehavior()
+            throws UsernameNotFoundException {
+        assertThrows(UsernameNotFoundException.class, () -> {
+            userService.loadUserByUsername("testuser");
+        });
+    }
+
+    @Test
     public void testLoadUserByUsernameSuccessBehavior()
             throws UsernameNotFoundException {
         when(userPrincipalRepo.findByUsername(anyString()))
                 .thenReturn(Optional.ofNullable(testUser));
         assertThat(userService.loadUserByUsername("testuser"))
                 .isEqualTo(testUser);
-    }
-
-
-    @Test
-    public void testLoadUserByUsernameFailureBehavior()
-            throws UsernameNotFoundException {
-        assertThrows(UsernameNotFoundException.class, () -> {
-            userService.loadUserByUsername("testuser");
-        });
     }
 
     @Test

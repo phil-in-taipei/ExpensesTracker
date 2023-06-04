@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 // in the UserDetailsServiceImpUnitTest class
 
 @SpringBootApplication
-@Profile("test")
+@Profile("test-user")
 public class ExpensesTrackerApplicationUserTest {
 
     public static void main(String[] args) {

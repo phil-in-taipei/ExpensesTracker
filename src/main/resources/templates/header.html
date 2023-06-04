@@ -46,8 +46,6 @@
                      href="#">Create Income Source</a></li>
               <li><a th:href="@{/user-income-sources}" class="dropdown-item"
                      href="#">View Income Sources</a></li>
-              <li><a th:href="@{/banks}" class="dropdown-item"
-                     href="#">View Banks</a></li>
             </ul>
           </li>
 
@@ -58,6 +56,20 @@
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a th:href="@{/create-bank}"  class="dropdown-item"
                      href="#">Create Banks</a></li>
+              <li><a th:href="@{/banks}" class="dropdown-item"
+                     href="#">View Banks</a></li>
+            </ul>
+          </li>
+
+          <li sec:authorize="hasRole('ROLE_EXPENSES_MANAGER')"  class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Savings Accounts
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a th:href="@{/create-savings-account}"  class="dropdown-item"
+                     href="#">Create Savings Account</a></li>
+              <li><a th:href="@{/user-savings-accounts}" class="dropdown-item"
+                     href="#">View Savings Accounts</a></li>
               <li><a th:href="@{/banks}" class="dropdown-item"
                      href="#">View Banks</a></li>
             </ul>
