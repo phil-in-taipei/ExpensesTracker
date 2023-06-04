@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -139,12 +140,11 @@ public class UserDetailsServiceImpUnitTest {
 
 
     @Test
-    public void testLoadUserByUsernameFailurBehavior()
+    public void testLoadUserByUsernameFailureBehavior()
             throws UsernameNotFoundException {
-        //when(userPrincipalRepo.findByUsername(anyString()))
-        //        .thenThrow(new UsernameNotFoundException("User not found with username or email : testuser"));
-        //assertThat(userService.loadUserByUsername("testuser"))
-        //        .isInstanceOf(UsernameNotFoundException.class);
+        assertThrows(UsernameNotFoundException.class, () -> {
+            userService.loadUserByUsername("testuser");
+        });
     }
 
     @Test
