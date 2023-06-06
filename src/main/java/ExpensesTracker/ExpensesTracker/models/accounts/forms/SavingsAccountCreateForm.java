@@ -6,12 +6,12 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @NoArgsConstructor
-public class SavingsAccountForm {
+public class SavingsAccountCreateForm {
 
     private String accountName;
 
-    Long bankId;
+    private Long bankId;
 
-    Long currencyId;
+    private Long currencyId;
 
 }

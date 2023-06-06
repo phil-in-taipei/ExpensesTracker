@@ -19,7 +19,7 @@ public class SavingsAccount {
     private Long id;
 
     @Column(nullable = false)
-    BigDecimal accountBalance;
+    private BigDecimal accountBalance;
 
     @Column(nullable = false)
     private String accountName;

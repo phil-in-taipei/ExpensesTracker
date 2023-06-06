@@ -27,7 +27,7 @@
                         <th scope="col">Bank Name</th>
                         <th scope="col">Account Name</th>
                         <th scope="col">Balance</th>
-                        <!--<th scope="col">Delete</th> -->
+                        <th scope="col">Update</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -36,10 +36,10 @@
                         <td th:text="${account.bank.bankName}"></td>
                         <td th:text="${account.accountName}"></td>
                         <td th:text="${account.accountBalance}"></td>
-                        <!--<td>
-                            <a th:href="@{'/delete-savings-account/' + ${account.id}}">
-                                Delete</a>
-                        </td> -->
+                        <td>
+                            <a th:href="@{'/update-savings-account/' + ${account.id}}">
+                                Edit</a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
