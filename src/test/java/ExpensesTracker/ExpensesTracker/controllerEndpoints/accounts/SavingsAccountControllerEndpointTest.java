@@ -85,17 +85,17 @@ public class SavingsAccountControllerEndpointTest {
     @Test
     @Order(1)
     @WithUserDetails("Test Expenses Manager User1")
-    public void saveNewSavingsAccount()
+    public void testSaveNewSavingsAccount()
             throws Exception {
         Bank testBank = bankRepo.findAll().get(0);
         Currency testCurrency = currencyRepo.findAll().get(0);
         UserPrincipal testUser = userPrincipalRepo.findAll().get(0);
-        MockHttpServletRequestBuilder createTask = post("/submit-savings-account")
-                .param("bank", String.valueOf(testBank.getId()))
-                .param("accountName", "Test Savings Account")
-                .param("user", String.valueOf(testUser.getId()))
-                .param("currency", String.valueOf(testCurrency.getId()));
-        mockMvc.perform(createTask)
+        MockHttpServletRequestBuilder createAccount = post(
+                "/submit-savings-account")
+                .param("bankId", String.valueOf(testBank.getId()))
+                .param("currencyId", String.valueOf(testCurrency.getId()))
+                .param("accountName", "Test Savings Account");
+        mockMvc.perform(createAccount)
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/user-savings-accounts"));
     }
@@ -114,5 +114,59 @@ public class SavingsAccountControllerEndpointTest {
                         containsString("Test Savings Account")))
                 .andExpect(view().name(
                         "accounts/user-savings-accounts"));
+    }
+
+    @Test
+    @Order(5)
+    @WithUserDetails("Test Expenses Manager User1")
+    public void testShowSubmitSavingsAccountPage() throws Exception {
+        mockMvc
+                .perform(get("/create-savings-account"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .contentType("text/html;charset=UTF-8"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().attributeExists("savingsAccount"))
+                .andExpect(MockMvcResultMatchers.content().string(
+                        containsString("Test Bank 1")))
+                .andExpect(MockMvcResultMatchers.content().string(
+                        containsString("Euro Member Countries")))
+                .andExpect(MockMvcResultMatchers.content().string(
+                        containsString("Taiwan New Dollar")))
+                .andExpect(MockMvcResultMatchers.content().string(
+                        containsString("United States Dollar")))
+                .andExpect(view().name(
+                        "accounts/create-savings-account"));
+    }
+
+    @Test
+    @Order(3)
+    @WithUserDetails("Test Expenses Manager User1")
+    public void testShowUpdateSavingsAccountPage() throws Exception {
+        SavingsAccount testAccount = savingsAccountsRepo.findAll().get(0);
+        MockHttpServletRequestBuilder updateAccount = get(
+                "/update-savings-account/" + testAccount.getId());
+        mockMvc.perform(updateAccount)
+                //.andDo(print())
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().attributeExists("savingsAccount"))
+                .andExpect(model().attributeExists("accountId"))
+                .andExpect(MockMvcResultMatchers.content().string(
+                        containsString("Test Savings Account")))
+                .andExpect(view().name(
+                        "accounts/update-savings-account"));
+    }
+
+    @Test
+    @Order(4)
+    @WithUserDetails("Test Expenses Manager User1")
+    public void testUpdateSavingsAccount() throws Exception {
+        SavingsAccount testAccount = savingsAccountsRepo.findAll().get(0);
+        MockHttpServletRequestBuilder updateAccount = post(
+                "/submit-updated-savings-account/" + testAccount.getId())
+                .param("accountName", "Updated Test Account")
+                .param("accountBalance", "100.00");
+        mockMvc.perform(updateAccount)
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/user-savings-accounts"));
     }
 }

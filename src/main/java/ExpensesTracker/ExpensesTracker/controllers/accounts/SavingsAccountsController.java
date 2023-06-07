@@ -35,6 +35,21 @@ public class SavingsAccountsController {
     UserDetailsServiceImp userService;
 
 
+    @RequestMapping("/delete-savings-account/{accountId}")
+    public String deleteSavingsAccount(
+            @PathVariable(name = "accountId")
+            Long accountId, Model model) {
+        if (savingsAccountService.getSavingsAccount(accountId) == null) {
+            model.addAttribute("message",
+                    "Cannot delete, savings account with id: "
+                            + accountId + " does not exist.");
+            return "error/error";
+        }
+        savingsAccountService.deleteSavingsAccount(accountId);
+        return "redirect:/user-savings-accounts";
+    }
+
+
 
     @GetMapping("/create-savings-account")
     public String showSubmitSavingsAccountPage(
@@ -70,20 +85,6 @@ public class SavingsAccountsController {
         return "accounts/update-savings-account";
     }
 
-    @RequestMapping("/delete-savings-account/{accountId}")
-    public String deleteSavingsAccount(
-            @PathVariable(name = "accountId")
-            Long accountId, Model model) {
-        if (savingsAccountService.getSavingsAccount(accountId) == null) {
-            model.addAttribute("message",
-                    "Cannot delete, savings account with id: "
-                            + accountId + " does not exist.");
-            return "error/error";
-        }
-        savingsAccountService.deleteSavingsAccount(accountId);
-        return "redirect:/user-savings-accounts";
-    }
-
     @PostMapping("/submit-savings-account")
     public String saveNewSavingsAccount(
             @ModelAttribute("savingsAccount")
@@ -114,7 +115,7 @@ public class SavingsAccountsController {
     @PostMapping("/submit-updated-savings-account/{accountId}")
     public String updateSavingsAccount(
             @PathVariable(name = "accountId") Long accountId,
-            @ModelAttribute("rescheduledTask")
+            @ModelAttribute("updatedAccount")
             SavingsAccountUpdateForm savingsAccountUpdateForm,
             Model model) {
         SavingsAccount updatedSavingsAccount = savingsAccountService.getSavingsAccount(
