@@ -36,7 +36,7 @@ public class IncomeSourceController {
     }
 
     @PostMapping("/submit-income-source")
-    public String saveNewSavingsAccount(
+    public String saveNewIncomeSource(
         @ModelAttribute("incomeSource")
         IncomeSource incomeSource, Model model) {
         try {

@@ -7,7 +7,6 @@ import ExpensesTracker.ExpensesTracker.models.user.Authority;
 import ExpensesTracker.ExpensesTracker.models.user.AuthorityEnum;
 import ExpensesTracker.ExpensesTracker.models.user.UserMeta;
 import ExpensesTracker.ExpensesTracker.models.user.UserPrincipal;
-import ExpensesTracker.ExpensesTracker.models.user.forms.UserRegistrationForm;
 import ExpensesTracker.ExpensesTracker.repositories.currency.CurrencyRepo;
 import ExpensesTracker.ExpensesTracker.repositories.user.AuthorityRepo;
 import ExpensesTracker.ExpensesTracker.repositories.user.UserPrincipalRepo;
@@ -57,7 +56,6 @@ public class SavingsAccountsControllerUnitTest {
 
     @Autowired
     MockMvc mockMvc;
-
 
     @MockBean
     AuthorityRepo authorityRepo;
