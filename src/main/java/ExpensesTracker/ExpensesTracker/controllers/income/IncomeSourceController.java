@@ -57,7 +57,7 @@ public class IncomeSourceController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         UserPrincipal user = userService.loadUserByUsername(userDetails.getUsername());
         List<IncomeSource> incomeSources = incomeSourceService
-                .getAllIncomeSourcesByUserId(user.getId());
+                .getAllIncomeSourcesByUserUsername(user.getUsername());
         model.addAttribute("incomeSources", incomeSources);
         return "income/user-income-sources";
     }

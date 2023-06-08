@@ -1,6 +1,6 @@
-package ExpensesTracker.ExpensesTracker.repositories.income;
+package ExpensesTracker.ExpensesTracker.repositories.transactions;
 import ExpensesTracker.ExpensesTracker.models.accounts.SavingsAccount;
-import ExpensesTracker.ExpensesTracker.models.income.Deposit;
+import ExpensesTracker.ExpensesTracker.models.transactions.Deposit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;

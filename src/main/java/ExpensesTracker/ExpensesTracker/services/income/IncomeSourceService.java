@@ -13,13 +13,13 @@ public class IncomeSourceService {
     @Autowired
     IncomeSourceRepo incomeSourceRepo;
 
-    public List<IncomeSource> getAllIncomeSourcesByUserId(Long userId) {
-        return incomeSourceRepo.findAllByUserIdOrderByIncomeSourceName(userId);
+    public List<IncomeSource> getAllIncomeSourcesByUserUsername(String username) {
+        return incomeSourceRepo.findAllByUserUsernameOrderByIncomeSourceName(username);
     }
 
     @Transactional
-    public void saveIncomeSource(IncomeSource incomeSource)
+    public IncomeSource saveIncomeSource(IncomeSource incomeSource)
             throws IllegalArgumentException {
-        incomeSourceRepo.save(incomeSource);
+        return incomeSourceRepo.save(incomeSource);
     }
 }

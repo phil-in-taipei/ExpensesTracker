@@ -6,5 +6,5 @@ import java.util.List;
 
 @Repository
 public interface IncomeSourceRepo extends JpaRepository<IncomeSource, Long> {
-    List<IncomeSource> findAllByUserIdOrderByIncomeSourceName(Long id);
+    List<IncomeSource> findAllByUserUsernameOrderByIncomeSourceName(String username);
 }

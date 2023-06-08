@@ -1,7 +1,8 @@
-package ExpensesTracker.ExpensesTracker.models.income;
+package ExpensesTracker.ExpensesTracker.models.transactions;
 
 import ExpensesTracker.ExpensesTracker.models.accounts.SavingsAccount;
 import ExpensesTracker.ExpensesTracker.models.currency.Currency;
+import ExpensesTracker.ExpensesTracker.models.income.IncomeSource;
 import lombok.*;
 
 import javax.persistence.*;

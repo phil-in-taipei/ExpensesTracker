@@ -1,4 +1,4 @@
-package ExpensesTracker.ExpensesTracker.models.expenses;
+package ExpensesTracker.ExpensesTracker.models.transactions;
 
 import ExpensesTracker.ExpensesTracker.models.accounts.Bank;
 import ExpensesTracker.ExpensesTracker.models.accounts.SavingsAccount;
