@@ -166,6 +166,7 @@ public class SavingsAccountControllerEndpointTest {
                 .param("accountName", "Updated Test Account")
                 .param("accountBalance", "100.00");
         mockMvc.perform(updateAccount)
+                //.andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/user-savings-accounts"));
     }

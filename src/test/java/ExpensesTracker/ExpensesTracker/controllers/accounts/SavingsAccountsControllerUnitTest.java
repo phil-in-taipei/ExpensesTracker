@@ -163,7 +163,6 @@ public class SavingsAccountsControllerUnitTest {
     @Test
     @WithMockUser(roles = {"USER", "EXPENSES_MANAGER"}, username = "testuser")
     public void testShowAllUsersAccounts() throws Exception {
-
         List<SavingsAccount> usersAccounts = new ArrayList<>();
         usersAccounts.add(testSavingsAccount1);
         usersAccounts.add(testSavingsAccount2);
@@ -216,5 +215,44 @@ public class SavingsAccountsControllerUnitTest {
                 .andExpect(view().name("accounts/create-savings-account"));
     }
 
+    @Test
+    @WithMockUser(roles = {"USER", "MAINTENANCE"}, username = "testuser")
+    public void testShowUpdateSavingsAccountPage() throws Exception {
+        when(userService.loadUserByUsername(anyString()))
+                .thenReturn(testUser);
+        when(savingsAccountService.getSavingsAccount(anyLong()))
+                .thenReturn(testSavingsAccount1);
+        MockHttpServletRequestBuilder updateAccount = get(
+                "/update-savings-account/" + testSavingsAccount1.getId());
+        mockMvc.perform(updateAccount)
+                //.andDo(print())
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().attributeExists("savingsAccount"))
+                .andExpect(model().attributeExists("accountId"))
+                .andExpect(MockMvcResultMatchers.content().string(
+                        containsString("Test Savings Account 1")))
+                .andExpect(view().name(
+                        "accounts/update-savings-account"));
+    }
 
+    @Test
+    @WithMockUser(roles = {"USER", "MAINTENANCE"}, username = "testuser")
+    public void testUpdateSavingsAccount() throws Exception {
+        testSavingsAccount1.setAccountBalance(BigDecimal.valueOf(100.00));
+        testSavingsAccount1.setAccountName("Updated Test Account");
+        when(savingsAccountService.getSavingsAccount(anyLong()))
+                .thenReturn(testSavingsAccount1);
+        when(savingsAccountService
+                .saveSavingsAccount(any(SavingsAccount.class)))
+                .thenReturn(testSavingsAccount1);
+        MockHttpServletRequestBuilder updateAccount = post(
+                "/submit-updated-savings-account/" + testSavingsAccount1.getId())
+                .with(csrf())
+                .param("accountName", "Updated Test Account")
+                .param("accountBalance", "100.00");
+        mockMvc.perform(updateAccount)
+                //.andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/user-savings-accounts"));
+    }
 }
