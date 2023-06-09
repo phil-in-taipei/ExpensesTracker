@@ -1,7 +1,8 @@
-package ExpensesTracker.ExpensesTracker.controllers.income;
+package ExpensesTracker.ExpensesTracker.controllers.expenses;
 
 import ExpensesTracker.ExpensesTracker.ExpensesTrackerApplication;
-import ExpensesTracker.ExpensesTracker.controllers.accounts.SavingsAccountsController;
+import ExpensesTracker.ExpensesTracker.controllers.income.IncomeSourceController;
+import ExpensesTracker.ExpensesTracker.models.expenses.Expense;
 import ExpensesTracker.ExpensesTracker.models.income.IncomeSource;
 import ExpensesTracker.ExpensesTracker.models.user.Authority;
 import ExpensesTracker.ExpensesTracker.models.user.AuthorityEnum;
@@ -11,7 +12,7 @@ import ExpensesTracker.ExpensesTracker.repositories.currency.CurrencyRepo;
 import ExpensesTracker.ExpensesTracker.repositories.user.AuthorityRepo;
 import ExpensesTracker.ExpensesTracker.repositories.user.UserPrincipalRepo;
 import ExpensesTracker.ExpensesTracker.services.accounts.BankService;
-import ExpensesTracker.ExpensesTracker.services.income.IncomeSourceService;
+import ExpensesTracker.ExpensesTracker.services.expenses.ExpenseService;
 import ExpensesTracker.ExpensesTracker.services.users.UserDetailsServiceImp;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@WebMvcTest(IncomeSourceController.class)
+@WebMvcTest(ExpensesController.class)
 @ContextConfiguration(classes = {ExpensesTrackerApplication.class})
 @ActiveProfiles("test")
-public class IncomeSourceControllerUnitTest {
+public class ExpensesControllerUnitTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -56,11 +57,10 @@ public class IncomeSourceControllerUnitTest {
     CurrencyRepo currencyRepo;
 
     @MockBean
-    IncomeSourceService incomeSourceService;
+    ExpenseService expenseService;
 
     @MockBean
     UserPrincipalRepo userPrincipalRepo;
-
 
     @MockBean
     UserDetailsServiceImp userService;
@@ -87,73 +87,73 @@ public class IncomeSourceControllerUnitTest {
             .password("testpassword")
             .build();
 
-    IncomeSource testIncomeSource1 = IncomeSource.builder()
+    Expense testExpense1 = Expense.builder()
             .id(1L)
-            .incomeSourceName("Test Income Source 1")
+            .expenseName("Test Expense 1")
             .user(testUser)
             .build();
 
-    IncomeSource testIncomeSource2 = IncomeSource.builder()
-            .id(2L)
-            .incomeSourceName("Test Income Source 2")
+    Expense testExpense2 = Expense.builder()
+            .id(1L)
+            .expenseName("Test Expense 2")
             .user(testUser)
             .build();
 
     @Test
     @WithMockUser(roles = {"USER", "MAINTENANCE"}, username = "testuser")
-    public void testSaveNewIncomeSource() throws Exception {
+    public void testSaveNewExpense() throws Exception {
         when(userService.loadUserByUsername(anyString()))
                 .thenReturn(testUser);
-        when(incomeSourceService.saveIncomeSource(any(IncomeSource.class)))
-                .thenReturn(testIncomeSource1);
-        MockHttpServletRequestBuilder createIncomeSource =
-                post("/submit-income-source")
+        when(expenseService.saveExpense(any(Expense.class)))
+                .thenReturn(testExpense1);
+        MockHttpServletRequestBuilder createExpense =
+                post("/submit-expense")
                         .with(csrf())
-                        .param("incomeSourceName", "Test Income Source 1");
-        mockMvc.perform(createIncomeSource)
+                        .param("expenseName", "Test Expense 1");
+        mockMvc.perform(createExpense)
                 //.andDo(print())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user-income-sources"));
+                .andExpect(redirectedUrl("/user-expenses"));
     }
 
     @Test
     @WithMockUser(roles = {"USER", "MAINTENANCE"}, username = "testuser")
-    public void testShowAllUsersIncomeSources() throws Exception {
-        List<IncomeSource> usersIncomeSources = new ArrayList<>();
-        usersIncomeSources.add(testIncomeSource1);
-        usersIncomeSources.add(testIncomeSource2);
+    public void testShowAllUsersExpenses() throws Exception {
+        List<Expense> usersExpenses = new ArrayList<>();
+        usersExpenses.add(testExpense1);
+        usersExpenses.add(testExpense2);
         when(userService.loadUserByUsername(anyString()))
                 .thenReturn(testUser);
-        when(incomeSourceService.getAllIncomeSourcesByUserUsername(anyString()))
-                .thenReturn(usersIncomeSources);
+        when(expenseService.getAllExpensesByUserUsername(anyString()))
+                .thenReturn(usersExpenses);
         mockMvc
-                .perform(get("/user-income-sources"))
+                .perform(get("/user-expenses"))
                 //.andDo(print())
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("text/html;charset=UTF-8"))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(model().attributeExists("incomeSources"))
+                .andExpect(model().attributeExists("expenses"))
                 .andExpect(MockMvcResultMatchers.content().string(
-                        containsString("Test Income Source 1")))
+                        containsString("Test Expense 1")))
                 .andExpect(MockMvcResultMatchers.content().string(
-                        containsString("Test Income Source 2")))
+                        containsString("Test Expense 2")))
                 .andExpect(view().name(
-                        "income/user-income-sources"));
+                        "expenses/user-expenses"));
     }
 
     @Test
     @WithMockUser(roles = {"USER", "MAINTENANCE"}, username = "testuser")
-    public void testShowSubmitIncomeSourcePage() throws Exception {
+    public void testShowCreateExpensePage() throws Exception {
         when(userService.loadUserByUsername(anyString()))
                 .thenReturn(testUser);
         mockMvc
-                .perform(get("/create-income-source"))
+                .perform(get("/create-expense"))
                 //.andDo(print())
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("text/html;charset=UTF-8"))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(model().attributeExists("incomeSource"))
+                .andExpect(model().attributeExists("expense"))
                 .andExpect(model().attributeExists("user"))
-                .andExpect(view().name("income/create-income-source"));
+                .andExpect(view().name("expenses/create-expense"));
     }
 }

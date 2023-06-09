@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
 <head>
+    <title>Create Expense</title>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-
+<div layout:fragment="content" th:remove="tag">
+    <br />
+    <div class="container border rounded text-center">
+        <div class="mt-4 p-5 rounded bg-light">
+            <h1>Create Expense</h1>
+            <form action="#" th:action="@{/submit-expense}"
+                  method="post" th:object="${expense}">
+                <input type="hidden" th:name="user" th:value="${user.id}"/>
+                <hr />
+                <div class="form-control bg-light">
+                    <label>Expense Name</label>
+                    <div>
+                        <input type="text" id="expenseName" class="form-control"
+                               th:field="*{expenseName}" required>
+                    </div>
+                </div>
+                <hr />
+                <div class="d-grid gap-2 col-6 mx-auto bg-light">
+                    <input class="btn btn-primary" type="submit" value="Submit"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br />
+</div>
 </body>
 </html>
