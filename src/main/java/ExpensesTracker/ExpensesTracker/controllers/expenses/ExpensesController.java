@@ -9,9 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,11 +33,28 @@ public class ExpensesController {
         return "expenses/create-expense";
     }
 
+    @RequestMapping("/delete-expense/{expenseId}")
+    public String deleteSavingsAccount(
+            @PathVariable(name = "expenseId")
+            Long expenseId, Model model) {
+        if (expenseService.getExpense(expenseId) == null) {
+            model.addAttribute("message",
+                    "Cannot delete, expense with id: "
+                            + expenseId + " does not exist.");
+            return "error/error";
+        }
+        expenseService.deleteExpense(expenseId);
+        return "redirect:/user-expenses";
+    }
+
     @PostMapping("/submit-expense")
     public String saveNewExpense(
             @ModelAttribute("expense")
-            Expense expense, Model model) {
+            Expense expense, Model model, Authentication authentication) {
         try {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            UserPrincipal user = userService.loadUserByUsername(userDetails.getUsername());
+            expense.setUser(user);
             expenseService.saveExpense(expense);
         } catch (IllegalArgumentException e) {
             model.addAttribute(

@@ -9,9 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,11 +33,28 @@ public class IncomeSourceController {
         return "income/create-income-source";
     }
 
+    @RequestMapping("/delete-income-source/{incomeSourceId}")
+    public String deleteSavingsAccount(
+            @PathVariable(name = "incomeSourceId")
+            Long incomeSourceId, Model model) {
+        if (incomeSourceService.getIncomeSource(incomeSourceId) == null) {
+            model.addAttribute("message",
+                    "Cannot delete, income source with id: "
+                            + incomeSourceId + " does not exist.");
+            return "error/error";
+        }
+        incomeSourceService.deleteIncomeSource(incomeSourceId);
+        return "redirect:/user-income-sources";
+    }
+
     @PostMapping("/submit-income-source")
     public String saveNewIncomeSource(
         @ModelAttribute("incomeSource")
-        IncomeSource incomeSource, Model model) {
+        IncomeSource incomeSource, Model model, Authentication authentication) {
         try {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            UserPrincipal user = userService.loadUserByUsername(userDetails.getUsername());
+            incomeSource.setUser(user);
             incomeSourceService.saveIncomeSource(incomeSource);
         } catch (IllegalArgumentException e) {
             model.addAttribute(
