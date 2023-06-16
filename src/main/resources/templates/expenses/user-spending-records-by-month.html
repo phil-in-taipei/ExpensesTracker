@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
+<head>
+    <title>User's Task</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <br />
+    <div class="container border rounded text-center bg-light">
+        <h2 th:text="${user.username} + '\'s Spending Records'"></h2>
+        <h2 th:text="${month} + ' ' + ${year}"></h2>
+        <hr />
+        <div th:if="${spendingRecords.size() > 0}">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Currency</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="spendingRecord : ${spendingRecords}">
+                        <td th:text="${spendingRecord.date}"></td>
+                        <td th:text="${spendingRecord.expense.expenseName}"></td>
+                        <td th:text="${spendingRecord.amount}"></td>
+                        <td th:text="${spendingRecord.currency.currencyCode}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div th:unless="${spendingRecords.size() > 0}">
+            <br />
+            <br />
+            <h3>No Spending Records for this month!</h3>
+            <br />
+            <br />
+        </div>
+        <br />
+    </div>
+    <br />
+</div>
+</body>
+</html>

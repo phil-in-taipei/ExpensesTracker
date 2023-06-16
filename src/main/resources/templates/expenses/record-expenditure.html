@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
+<head>
+    <title>Create Savings Account</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <br />
+    <div class="container border rounded text-center">
+        <div class="mt-4 p-5 rounded bg-light">
+            <h1>Record Expenditure</h1>
+            <form action="#" th:action="@{/submit-spending-record}" method="post" th:object="${spendingRecord}">
+                <hr />
+                <div class="form-control bg-light">
+                    <div class="form-control">
+                        <label>Expense Name</label>
+                        <div>
+                            <select class="form-select" th:name="expenseId">
+                                <option th:if="${expenses.isEmpty()}">None Available</option>
+                                <option th:each="expense : ${expenses}" th:value="${expense.id}" th:text="${expense.expenseName}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+                <hr />
+                <div class="form-control bg-light">
+                    <label>Date</label>
+                    <div>
+                        <input type="date" id="date" class="form-control"
+                               th:field="*{date}" required>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-control bg-light">
+                    <label>Amount</label>
+                    <div>
+                        <input type="number" id="amount" min="0"
+                               step=".01" class="form-control"  th:field="*{amount}"
+                               required>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-control bg-light">
+                    <div class="form-control">
+                        <label>Currency</label>
+                        <div>
+                            <select class="form-select" th:name="currencyId">
+                                <option th:if="${currencies.isEmpty()}">None Available</option>
+                                <option th:each="currency : ${currencies}" th:value="${currency.id}" th:text="${currency.currencyName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+                <hr />
+                <div class="d-grid gap-2 col-6 mx-auto bg-light">
+                    <input class="btn btn-primary" type="submit" value="Submit"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br />
+</div>
+</body>
+</html>

@@ -54,10 +54,7 @@ public class SavingsAccountsController {
     @GetMapping("/create-savings-account")
     public String showSubmitSavingsAccountPage(
             Authentication authentication, Model model) {
-        //UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        //UserPrincipal user = userService.loadUserByUsername(userDetails.getUsername());
         SavingsAccountCreateForm savingsAccount = new SavingsAccountCreateForm();
-        //model.addAttribute("user", user);
         model.addAttribute("savingsAccount", savingsAccount);
         List<Bank> banks = bankService.getAllBanks();
         model.addAttribute("banks", banks);
