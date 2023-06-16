@@ -3,6 +3,7 @@ import ExpensesTracker.ExpensesTracker.models.currency.Currency;
 import ExpensesTracker.ExpensesTracker.models.expenses.Expense;
 import ExpensesTracker.ExpensesTracker.models.expenses.SpendingRecord;
 import ExpensesTracker.ExpensesTracker.models.expenses.forms.SpendingRecordForm;
+import ExpensesTracker.ExpensesTracker.models.search.SearchMonthAndYearForm;
 import ExpensesTracker.ExpensesTracker.models.user.UserPrincipal;
 import ExpensesTracker.ExpensesTracker.services.currency.CurrencyService;
 import ExpensesTracker.ExpensesTracker.services.expenses.ExpenseService;
@@ -34,6 +35,39 @@ public class SpendingRecordController {
 
     @Autowired
     UserDetailsServiceImp userService;
+
+    @PostMapping("/search-expenditures-by-month-year")
+    public String searchTasksByMonthAndYear(
+            @ModelAttribute("searchMonthAndYear")
+            SearchMonthAndYearForm searchMonthAndYear,
+            Model model, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        UserPrincipal user = userService.loadUserByUsername(userDetails.getUsername());
+        Month month = searchMonthAndYear.getMonth();
+        int queryMonth = month.getValue();
+        int queryYear = searchMonthAndYear.getYear();
+        LocalDate date = LocalDate.now();
+        // finds local date for the first day of the specified month/year
+        LocalDate monthBegin = date.withDayOfMonth(1).withMonth(queryMonth)
+                .withYear(queryYear);
+        // finds local date for the last day of the specified month/year
+        LocalDate monthEnd = monthBegin.plusMonths(1)
+                .withDayOfMonth(1).minusDays(1);
+        Month[] monthOptions = Month.values();
+        // the first and last days of the month are query arguments in the service
+        // to provide all tasks scheduled by the user in the date range
+        List<SpendingRecord> spendingRecords = spendingRecordService
+                .getAllUserSpendingRecordsInDateRange(
+                        user.getUsername(), monthBegin, monthEnd);
+        model.addAttribute("searchMonthAndYear",
+                new SearchMonthAndYearForm());
+        model.addAttribute("monthOptions", monthOptions);
+        model.addAttribute("year", queryYear);
+        model.addAttribute("month", month);
+        model.addAttribute("spendingRecords", spendingRecords);
+        model.addAttribute("user", user);
+        return "expenses/user-spending-records-by-month";
+    }
 
 
     @GetMapping("/user-expenditures-current-month")
@@ -69,6 +103,15 @@ public class SpendingRecordController {
                 .getAllExpensesByUserUsername(user.getUsername());
         model.addAttribute("expenses", expenses);
         return "expenses/record-expenditure";
+    }
+
+    @GetMapping("/search-expenditures-by-month-and-year")
+    public String showSearchExpendituresByMonthAndYearPage(Model model) {
+        Month[] monthOptions = Month.values();
+        model.addAttribute("monthOptions", monthOptions);
+        model.addAttribute("searchMonthAndYear",
+                new SearchMonthAndYearForm());
+        return "expenses/search-expenditures-by-month-and-year";
     }
 
     @PostMapping("/submit-spending-record")
