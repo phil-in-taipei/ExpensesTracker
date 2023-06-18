@@ -17,6 +17,11 @@ public class SpendingRecordService {
     SpendingRecordRepo spendingRecordRepo;
 
     @Loggable
+    public void deleteSpendingRecord(Long id) {
+        spendingRecordRepo.deleteById(id);
+    }
+
+    @Loggable
     public List<SpendingRecord> getAllUserSpendingRecordsInDateRange(
             String username, LocalDate firstDate, LocalDate lastDate) {
         return spendingRecordRepo
@@ -25,6 +30,7 @@ public class SpendingRecordService {
                 );
     }
 
+    @Loggable
     public SpendingRecord getSpendingRecord(Long id) {
         return spendingRecordRepo.findById(id)
                 .orElse(null);

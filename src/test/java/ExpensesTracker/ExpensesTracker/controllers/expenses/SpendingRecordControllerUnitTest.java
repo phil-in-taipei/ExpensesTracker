@@ -183,6 +183,7 @@ public class SpendingRecordControllerUnitTest {
                 .andExpect(view().name(
                         "expenses/user-spending-records-by-month"));
     }
+
     @Test
     @WithMockUser(roles = {"USER", "MAINTENANCE"}, username = "testuser")
     public void testShowAllUserSpendingRecordsForCurrentMonth()

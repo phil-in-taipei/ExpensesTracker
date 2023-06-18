@@ -19,10 +19,18 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @SpringBootTest(classes = ExpensesTrackerApplication.class)
 @ActiveProfiles("test")
@@ -63,5 +71,38 @@ public class ExpensesControllerEndpointTest {
         mockMvc.perform(createAccount)
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/user-expenses"));
+    }
+
+
+    @Test
+    @Order(2)
+    @WithUserDetails("Test Expenses Manager User1")
+    public void testShowAllUsersExpenses() throws Exception {
+        mockMvc
+                .perform(get("/user-expenses"))
+                //.andDo(print())
+                .andExpect(MockMvcResultMatchers.content()
+                        .contentType("text/html;charset=UTF-8"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().attributeExists("expenses"))
+                .andExpect(MockMvcResultMatchers.content().string(
+                        containsString("Test Expense 1")))
+                .andExpect(view().name(
+                        "expenses/user-expenses"));
+    }
+
+    @Test
+    @Order(3)
+    @WithUserDetails("Test Expenses Manager User1")
+    public void testShowCreateExpensePage() throws Exception {
+        mockMvc
+                .perform(get("/create-expense"))
+                //.andDo(print())
+                .andExpect(MockMvcResultMatchers.content()
+                        .contentType("text/html;charset=UTF-8"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(model().attributeExists("expense"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(view().name("expenses/create-expense"));
     }
 }

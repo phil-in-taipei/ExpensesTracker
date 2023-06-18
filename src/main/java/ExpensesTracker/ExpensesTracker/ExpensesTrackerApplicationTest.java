@@ -56,6 +56,9 @@ public class ExpensesTrackerApplicationTest implements CommandLineRunner {
             System.out.print("*********Created Bank: " + testBank.toString() + "**************");
         }
 
+        // this should not be empty because currencies created in
+        // main bootstrapping class
+        /*
         if (currencyRepo.findAll().isEmpty()) {
             Currency testCurrency = Currency.builder()
                     .id(1L)
@@ -63,7 +66,7 @@ public class ExpensesTrackerApplicationTest implements CommandLineRunner {
                     .currencyName("Test Currency").build();
             currencyRepo.save(testCurrency);
             System.out.print("*********Created Currency: " + testCurrency.toString() + "**************");
-        }
+        } */
 
         if (authorityRepo.findAll().isEmpty()) {
             // constructs the Authorities for the different user types and

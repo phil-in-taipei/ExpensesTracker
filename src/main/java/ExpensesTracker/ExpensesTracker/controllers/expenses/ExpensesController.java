@@ -34,7 +34,7 @@ public class ExpensesController {
     }
 
     @RequestMapping("/delete-expense/{expenseId}")
-    public String deleteSavingsAccount(
+    public String deleteExpense(
             @PathVariable(name = "expenseId")
             Long expenseId, Model model) {
         if (expenseService.getExpense(expenseId) == null) {

@@ -36,6 +36,20 @@ public class SpendingRecordController {
     @Autowired
     UserDetailsServiceImp userService;
 
+    @RequestMapping("/delete-spending-record/{spendingRecordId}")
+    public String deleteSpendingRecord(
+            @PathVariable(name = "spendingRecordId")
+            Long spendingRecordId, Model model) {
+        if (spendingRecordService.getSpendingRecord(spendingRecordId) == null) {
+            model.addAttribute("message",
+                    "Cannot delete, spending record with id: "
+                            + spendingRecordId + " does not exist.");
+            return "error/error";
+        }
+        spendingRecordService.deleteSpendingRecord(spendingRecordId);
+        return "redirect:/user-expenditures-current-month";
+    }
+
     @PostMapping("/search-expenditures-by-month-year")
     public String searchTasksByMonthAndYear(
             @ModelAttribute("searchMonthAndYear")
