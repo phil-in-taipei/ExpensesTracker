@@ -20,10 +20,6 @@ public class Deposit {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn
-    private Currency currency;
-
     @Column(nullable = false)
     private  BigDecimal depositAmount;
 
