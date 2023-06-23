@@ -20,14 +20,13 @@ public class RegistrationController {
     @Autowired
     UserDetailsServiceImp userDetailsService;
 
-    @Loggable
+
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("userRegistrationForm", new UserRegistrationForm());
         return "auth/register";
     }
 
-    @Loggable
     @PostMapping("/register")
     public String submitRegisterForm(
             @ModelAttribute("userRegistration")
@@ -49,23 +48,29 @@ public class RegistrationController {
             return "auth/register-failure";
         }
         UserPrincipal createdUser = userDetailsService.createNewExpensesManagerUser(userRegistration);
+        // verifies user creation successful; otherwise, redirects to registration failure page
+        System.out.println(createdUser);
+        if (createdUser == null) {
+            model.addAttribute("errorMsg",
+                    "There was error creating your account");
+            return "register-failure";
+        }
         model.addAttribute("user", createdUser);
         return "auth/register-success";
     }
-
-    @Loggable
     @GetMapping("/register-admin")
     public String showRegisterFormForAdmin(Model model) {
         model.addAttribute("userRegistrationForm", new UserRegistrationForm());
         return "auth/register-admin";
     }
 
-    @Loggable
     @PostMapping("/register-admin")
     public String submitRegisterFormForAdmin(
             @ModelAttribute("userRegistration") UserRegistrationForm userRegistration,
             Model model) throws
             SQLIntegrityConstraintViolationException {
+        System.out.println("*******************Now registering admin user****************");
+        System.out.println(userRegistration.toString());
         // verifies that the passwords match prior to registration;
         // otherwise, redirects to registration failure page
         if (!Objects.equals(userRegistration.getPassword(),
@@ -74,10 +79,13 @@ public class RegistrationController {
                     "The passwords do not match!");
             return "auth/register-failure";
         }
-        // check if the username has already been used, if so return an error
-        if (userDetailsService.loadUserByUsername(userRegistration.getUsername())!=null) {
+        // verifies that a user with the username doesn't already exist
+        // prior to registration; otherwise, redirects to registration failure page
+        if (userDetailsService.usernameAlreadyExists(userRegistration.getUsername())) {
             model.addAttribute("errorMsg",
-                    "That username is unavailable! Please try again");
+                    "The username, " +
+                            userRegistration.getUsername() +
+                            ", has already been taken. Please select another username");
             return "auth/register-failure";
         }
         UserPrincipal createdUser = userDetailsService
