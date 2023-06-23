@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -32,6 +33,6 @@ public class Deposit {
     private SavingsAccount savingsAccount;
 
     @Column(nullable = false)
-    private LocalDateTime time;
+    private LocalDate date;
 
 }

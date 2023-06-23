@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -26,5 +27,5 @@ public class Withdrawal {
     private BigDecimal amount;
 
     @Column(nullable = false)
-    private Timestamp time;
+    private LocalDate date;
 }
