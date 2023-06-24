@@ -51,7 +51,7 @@ public class SpendingRecordController {
     }
 
     @PostMapping("/search-expenditures-by-month-year")
-    public String searchTasksByMonthAndYear(
+    public String searchExpendituresByMonthAndYear(
             @ModelAttribute("searchMonthAndYear")
             SearchMonthAndYearForm searchMonthAndYear,
             Model model, Authentication authentication) {
@@ -67,15 +67,11 @@ public class SpendingRecordController {
         // finds local date for the last day of the specified month/year
         LocalDate monthEnd = monthBegin.plusMonths(1)
                 .withDayOfMonth(1).minusDays(1);
-        Month[] monthOptions = Month.values();
         // the first and last days of the month are query arguments in the service
         // to provide all tasks scheduled by the user in the date range
         List<SpendingRecord> spendingRecords = spendingRecordService
                 .getAllUserSpendingRecordsInDateRange(
                         user.getUsername(), monthBegin, monthEnd);
-        model.addAttribute("searchMonthAndYear",
-                new SearchMonthAndYearForm());
-        model.addAttribute("monthOptions", monthOptions);
         model.addAttribute("year", queryYear);
         model.addAttribute("month", month);
         model.addAttribute("spendingRecords", spendingRecords);

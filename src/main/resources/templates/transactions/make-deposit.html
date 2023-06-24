@@ -1,10 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
 <head>
+    <title>Make Deposit</title>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-
+<div layout:fragment="content" th:remove="tag">
+    <br />
+    <div class="container border rounded text-center">
+        <div class="mt-4 p-5 rounded bg-light">
+            <h1>Make Deposit</h1>
+            <form action="#" th:action="@{/submit-deposit-form}"
+                  method="post" th:object="${deposit}">
+                <hr />
+                <div class="form-control bg-light">
+                    <div class="form-control">
+                        <label>Savings Account</label>
+                        <div>
+                            <select class="form-select" th:name="savingsAccountId">
+                                <option th:if="${savingsAccounts.isEmpty()}">None Available</option>
+                                <option th:each="account : ${savingsAccounts}" th:value="${account.id}"
+                                        th:text="${account.templateSelector()}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+                <hr />
+                <div class="form-control bg-light">
+                    <label>Date</label>
+                    <div>
+                        <input type="date" id="date" class="form-control"
+                               th:field="*{date}" required>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-control bg-light">
+                    <label>Amount</label>
+                    <div>
+                        <input type="number" id="amount" min="0"
+                               step=".01" class="form-control"  th:field="*{depositAmount}"
+                               required>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-control bg-light">
+                    <div class="form-control">
+                        <label>Income Source</label>
+                        <div>
+                            <select class="form-select" th:name="incomeSourceId">
+                                <option th:if="${incomeSources.isEmpty()}">None Available</option>
+                                <option th:each="source : ${incomeSources}" th:value="${source.id}"
+                                        th:text="${source.incomeSourceName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+                <hr />
+                <div class="d-grid gap-2 col-6 mx-auto bg-light">
+                    <input class="btn btn-primary" type="submit" value="Submit"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br />
+</div>
 </body>
 </html>
