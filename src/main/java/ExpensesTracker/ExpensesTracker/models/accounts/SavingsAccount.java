@@ -31,9 +31,18 @@ public class SavingsAccount {
     @JoinColumn
     private Currency currency;
 
-
     @ManyToOne(optional = false)
     @JoinColumn
     private UserPrincipal user;
+
+    // this is for forms in thymeleaf to have a readable String
+    public String templateSelector() {
+        String abbreviatedAccountName = accountName.substring(
+                0, Math.min(accountName.length(), 30)
+        );
+        return bank.getBankName()
+                + " (" + currency.getCurrencyCode()
+                + "): " + abbreviatedAccountName;
+    }
 
 }
