@@ -12,5 +12,5 @@ public interface DepositRepo extends JpaRepository<Deposit, Long> {
             String username, LocalDate firstDate, LocalDate lastDate);
 
     List<Deposit> findAllBySavingsAccountIdAndDateBetweenOrderByDateDesc(
-            String username, LocalDate firstDate, LocalDate lastDate);
+            Long accountId, LocalDate firstDate, LocalDate lastDate);
 }

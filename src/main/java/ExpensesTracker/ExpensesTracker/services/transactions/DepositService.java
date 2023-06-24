@@ -22,6 +22,15 @@ public class DepositService {
     }
 
     @Loggable
+    public List<Deposit> getAllDepositsBySavingsAccountInDateRange(
+            Long accountId, LocalDate firstDate, LocalDate lastDate) {
+        return depositRepo
+                .findAllBySavingsAccountIdAndDateBetweenOrderByDateDesc(
+                        accountId, firstDate, lastDate
+                );
+    }
+
+    @Loggable
     public List<Deposit> getAllUserDepositsInDateRange(
             String username, LocalDate firstDate, LocalDate lastDate) {
         return depositRepo
@@ -30,12 +39,13 @@ public class DepositService {
                 );
     }
 
-
+    @Loggable
     public Deposit getDeposit(Long id) {
         return depositRepo.findById(id)
                 .orElse(null);
     }
 
+    @Loggable
     @Transactional
     public Deposit saveDeposit(Deposit deposit)
             throws IllegalArgumentException {
