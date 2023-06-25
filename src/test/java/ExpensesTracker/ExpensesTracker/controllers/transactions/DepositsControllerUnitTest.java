@@ -339,7 +339,7 @@ public class DepositsControllerUnitTest {
                         .with(csrf())
                         .param("incomeSourceId", testIncomeSource1.getId().toString())
                         .param("date", firstDayOfThisMonth.toString())
-                        .param("amount", String.valueOf(200.00))
+                        .param("depositAmount", String.valueOf(200.00))
                         .param("savingsAccountId", testAccount1.getId().toString());
         mockMvc.perform(makeDeposit)
                 //.andDo(print())
