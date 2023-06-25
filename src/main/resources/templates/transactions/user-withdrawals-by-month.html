@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
 <head>
+    <title>User's Withdrawals</title>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-
+<div layout:fragment="content" th:remove="tag">
+    <br />
+    <div class="container border rounded text-center bg-light">
+        <h2 th:text="${user.username} + '\'s Withdrawals'"></h2>
+        <h2 th:text="${month} + ' ' + ${year}"></h2>
+        <hr />
+        <div th:if="${withdrawals.size() > 0}">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Account</th>
+                        <th scope="col">Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="withdrawal : ${withdrawals}">
+                        <td th:text="${withdrawal.date}"></td>
+                        <td th:text="${withdrawal.savingsAccount.templateSelector()}"></td>
+                        <td th:text="${withdrawal.amount}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div th:unless="${withdrawals.size() > 0}">
+            <br />
+            <br />
+            <h3>No Withdrawals for this month!</h3>
+            <br />
+            <br />
+        </div>
+        <br />
+    </div>
+    <br />
+</div>
 </body>
 </html>
