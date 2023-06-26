@@ -16,9 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -40,6 +38,20 @@ public class DepositsController {
 
     @Autowired
     UserDetailsServiceImp userService;
+
+    @RequestMapping("/delete-deposit/{depositId}")
+    public String deleteSpendingRecord(
+            @PathVariable(name = "depositId")
+            Long depositId, Model model) {
+        if (depositService.getDeposit(depositId) == null) {
+            model.addAttribute("message",
+                    "Cannot delete, deposit with id: "
+                            + depositId + " does not exist.");
+            return "error/error";
+        }
+        depositService.deleteDeposit(depositId);
+        return "redirect:/user-deposits-current-month";
+    }
 
     @GetMapping("/make-deposit")
     public String showMakeDepositFormPage(
