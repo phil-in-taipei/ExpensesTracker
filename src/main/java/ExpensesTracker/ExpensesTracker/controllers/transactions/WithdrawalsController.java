@@ -12,9 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,6 +31,30 @@ public class WithdrawalsController {
 
     @Autowired
     WithdrawalService withdrawalService;
+
+    // currently this is just for testing
+    @RequestMapping("/delete-withdrawal/{withdrawalId}")
+    public String deleteWithdrawal(
+            @PathVariable(name = "withdrawalId")
+            Long withdrawalId, Model model) {
+        Withdrawal withdrawalToBeDeleted = withdrawalService.getWithdrawal(withdrawalId);
+        if (withdrawalToBeDeleted == null) {
+            model.addAttribute("message",
+                    "Cannot delete, withdrawal with id: "
+                            + withdrawalId + " does not exist.");
+            return "error/error";
+        }
+        Long savingsAccountId = withdrawalToBeDeleted.getSavingsAccount().getId();
+        BigDecimal withdrawalAmount = withdrawalToBeDeleted.getAmount();
+        withdrawalService.deleteWithdrawal(withdrawalId);
+        // the amount of money in the deleted withdrawal object
+        // is added back into the account balance, which is then saved
+        SavingsAccount savingsAccount = savingsAccountService.getSavingsAccount(savingsAccountId);
+        savingsAccount.setAccountBalance(
+                savingsAccount.getAccountBalance().add(withdrawalAmount));
+        savingsAccountService.saveSavingsAccount(savingsAccount);
+        return "redirect:/user-withdrawals-current-month";
+    }
 
     @PostMapping("/search-withdrawals-by-month-year")
     public String searchWithdrawalsByMonthAndYear(

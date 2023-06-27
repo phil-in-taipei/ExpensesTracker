@@ -23,6 +23,7 @@
                         <th scope="col">Date</th>
                         <th scope="col">Account</th>
                         <th scope="col">Amount</th>
+                        <th scope="col">Delete</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -30,6 +31,11 @@
                         <td th:text="${withdrawal.date}"></td>
                         <td th:text="${withdrawal.savingsAccount.templateSelector()}"></td>
                         <td th:text="${withdrawal.amount}"></td>
+                        <td>
+                            <a th:href="@{'/delete-withdrawal/' + ${withdrawal.id}}">
+                                Delete
+                            </a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

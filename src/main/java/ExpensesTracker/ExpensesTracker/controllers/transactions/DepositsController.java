@@ -1,7 +1,6 @@
 package ExpensesTracker.ExpensesTracker.controllers.transactions;
 
 import ExpensesTracker.ExpensesTracker.models.accounts.SavingsAccount;
-import ExpensesTracker.ExpensesTracker.models.expenses.forms.SpendingRecordForm;
 import ExpensesTracker.ExpensesTracker.models.income.IncomeSource;
 import ExpensesTracker.ExpensesTracker.models.search.SearchMonthAndYearForm;
 import ExpensesTracker.ExpensesTracker.models.transactions.Deposit;
@@ -39,17 +38,28 @@ public class DepositsController {
     @Autowired
     UserDetailsServiceImp userService;
 
+    // currently this is just for testing
     @RequestMapping("/delete-deposit/{depositId}")
-    public String deleteSpendingRecord(
+    public String deleteDeposit(
             @PathVariable(name = "depositId")
             Long depositId, Model model) {
-        if (depositService.getDeposit(depositId) == null) {
+        Deposit depositToBeDeleted = depositService.getDeposit(depositId);
+        if (depositToBeDeleted == null) {
             model.addAttribute("message",
                     "Cannot delete, deposit with id: "
                             + depositId + " does not exist.");
             return "error/error";
         }
+        // the amount of money in the deleted deposit object
+        // will have to be added back into the account balance
+        // in the related savings account and saved
+        Long savingsAccountId = depositToBeDeleted.getSavingsAccount().getId();
+        BigDecimal depositAmount = depositToBeDeleted.getDepositAmount();
         depositService.deleteDeposit(depositId);
+        SavingsAccount savingsAccount = savingsAccountService.getSavingsAccount(savingsAccountId);
+        savingsAccount.setAccountBalance(
+                savingsAccount.getAccountBalance().subtract(depositAmount));
+        savingsAccountService.saveSavingsAccount(savingsAccount);
         return "redirect:/user-deposits-current-month";
     }
 
