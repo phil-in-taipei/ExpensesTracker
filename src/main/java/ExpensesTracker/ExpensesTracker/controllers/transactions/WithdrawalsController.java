@@ -48,10 +48,11 @@ public class WithdrawalsController {
         BigDecimal withdrawalAmount = withdrawalToBeDeleted.getAmount();
         withdrawalService.deleteWithdrawal(withdrawalId);
         // the amount of money in the deleted withdrawal object
-        // is added back into the account balance, which is then saved
+        // is deposited back into the account balance, which is then saved
         SavingsAccount savingsAccount = savingsAccountService.getSavingsAccount(savingsAccountId);
-        savingsAccount.setAccountBalance(
-                savingsAccount.getAccountBalance().add(withdrawalAmount));
+        savingsAccount = savingsAccountService.depositMoneyIntoAccount(savingsAccount, withdrawalAmount);
+        //savingsAccount.setAccountBalance(
+        //        savingsAccount.getAccountBalance().add(withdrawalAmount));
         savingsAccountService.saveSavingsAccount(savingsAccount);
         return "redirect:/user-withdrawals-current-month";
     }
@@ -139,9 +140,8 @@ public class WithdrawalsController {
             withdrawal.setSavingsAccount(savingsAccount);
             withdrawal.setDate(date);
             withdrawalService.saveWithdrawal(withdrawal);
-            savingsAccount.setAccountBalance(
-                    savingsAccount.getAccountBalance().subtract(withdrawalAmount)
-            );
+            savingsAccount = savingsAccountService
+                    .withdrawMoneyFromAccount(savingsAccount, withdrawalAmount);
             savingsAccountService.saveSavingsAccount(savingsAccount);
         } catch (IllegalArgumentException e) {
             model.addAttribute(

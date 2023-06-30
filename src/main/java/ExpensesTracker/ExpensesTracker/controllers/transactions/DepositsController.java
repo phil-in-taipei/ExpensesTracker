@@ -51,14 +51,14 @@ public class DepositsController {
             return "error/error";
         }
         // the amount of money in the deleted deposit object
-        // will have to be added back into the account balance
+        // will have to be withdrawn back out of the account balance
         // in the related savings account and saved
         Long savingsAccountId = depositToBeDeleted.getSavingsAccount().getId();
         BigDecimal depositAmount = depositToBeDeleted.getDepositAmount();
         depositService.deleteDeposit(depositId);
         SavingsAccount savingsAccount = savingsAccountService.getSavingsAccount(savingsAccountId);
-        savingsAccount.setAccountBalance(
-                savingsAccount.getAccountBalance().subtract(depositAmount));
+        savingsAccount = savingsAccountService
+                .withdrawMoneyFromAccount(savingsAccount, depositAmount);
         savingsAccountService.saveSavingsAccount(savingsAccount);
         return "redirect:/user-deposits-current-month";
     }
@@ -131,9 +131,10 @@ public class DepositsController {
             deposit.setDate(date);
             deposit.setIncomeSource(incomeSource);
             depositService.saveDeposit(deposit);
-            savingsAccount.setAccountBalance(
-                    savingsAccount.getAccountBalance().add(depositAmount)
-            );
+            // the deposit amount is deposited into the savings account,
+            // which is then saved
+            savingsAccount = savingsAccountService
+                    .depositMoneyIntoAccount(savingsAccount, depositAmount);
             savingsAccountService.saveSavingsAccount(savingsAccount);
         } catch (IllegalArgumentException e) {
             model.addAttribute(
