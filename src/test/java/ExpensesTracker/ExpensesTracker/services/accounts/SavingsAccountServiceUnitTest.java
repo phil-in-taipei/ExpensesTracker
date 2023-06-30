@@ -98,6 +98,16 @@ public class SavingsAccountServiceUnitTest {
     }
 
     @Test
+    public void testDepositMoneyIntoAccount() {
+        // the original balance is 0.00, and 500.00 should be added
+        // to the amount in the service method
+        assertThat(savingsAccountService
+                .depositMoneyIntoAccount(
+                        testAccount1, BigDecimal.valueOf(500.00)).getAccountBalance())
+                .isEqualTo(BigDecimal.valueOf(500.00));
+    }
+
+    @Test
     public void testGetAllAccountsByUserUsername() {
         List<SavingsAccount> userSavingsAccounts = new ArrayList<>();
         userSavingsAccounts.add(testAccount1);
@@ -154,4 +164,15 @@ public class SavingsAccountServiceUnitTest {
                 .isEqualTo(testAccount1);
     }
 
+    @Test
+    public void testWithdrawMoneyFromAccount() {
+        // first set the balance as 500.00
+        testAccount1.setAccountBalance(BigDecimal.valueOf(500.00));
+        // the balance should be 0.00 after subtracting the amount
+        // in the service method
+        assertThat(savingsAccountService
+                .withdrawMoneyFromAccount(
+                        testAccount1, BigDecimal.valueOf(500.00)).getAccountBalance())
+                .isEqualTo(BigDecimal.valueOf(0.00));
+    }
 }
