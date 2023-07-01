@@ -124,7 +124,7 @@ public class WithdrawalServiceUnitTest {
         userWithdrawals.add(testWithdrawal1);
         userWithdrawals.add(testWithdrawal2);
         when(withdrawalRepo
-                .findAllBySavingsAccountIdAndDateBetweenOrderByDateDesc(
+                .findAllBySavingsAccountIdAndDateBetweenOrderByDateAsc(
                         anyLong(), any(LocalDate.class), any(LocalDate.class)))
                 .thenReturn(userWithdrawals);
         assertThat(

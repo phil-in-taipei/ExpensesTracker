@@ -25,7 +25,7 @@ public class DepositService {
     public List<Deposit> getAllDepositsBySavingsAccountInDateRange(
             Long accountId, LocalDate firstDate, LocalDate lastDate) {
         return depositRepo
-                .findAllBySavingsAccountIdAndDateBetweenOrderByDateDesc(
+                .findAllBySavingsAccountIdAndDateBetweenOrderByDateAsc(
                         accountId, firstDate, lastDate
                 );
     }
@@ -34,7 +34,7 @@ public class DepositService {
     public List<Deposit> getAllUserDepositsInDateRange(
             String username, LocalDate firstDate, LocalDate lastDate) {
         return depositRepo
-                .findAllBySavingsAccount_UserUsernameAndDateBetweenOrderByDateDesc(
+                .findAllBySavingsAccount_UserUsernameAndDateBetweenOrderByDateAsc(
                         username, firstDate, lastDate
                 );
     }

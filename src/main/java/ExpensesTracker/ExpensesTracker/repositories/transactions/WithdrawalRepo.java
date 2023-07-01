@@ -9,9 +9,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface WithdrawalRepo extends JpaRepository<Withdrawal, Long> {
-    List<Withdrawal> findAllBySavingsAccount_UserUsernameAndDateBetweenOrderByDateDesc(
+    List<Withdrawal> findAllBySavingsAccount_UserUsernameAndDateBetweenOrderByDateAsc(
             String username, LocalDate firstDate, LocalDate lastDate);
 
-    List<Withdrawal> findAllBySavingsAccountIdAndDateBetweenOrderByDateDesc(
+    List<Withdrawal> findAllBySavingsAccountIdAndDateBetweenOrderByDateAsc(
             Long accountId, LocalDate firstDate, LocalDate lastDate);
 }

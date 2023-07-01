@@ -116,7 +116,7 @@ public class DepositServiceUnitTest {
         userDeposits.add(testDeposit1);
         userDeposits.add(testDeposit2);
         when(depositRepo
-                .findAllBySavingsAccountIdAndDateBetweenOrderByDateDesc(
+                .findAllBySavingsAccountIdAndDateBetweenOrderByDateAsc(
                         anyLong(), any(LocalDate.class), any(LocalDate.class)))
                 .thenReturn(userDeposits);
         assertThat(
@@ -135,7 +135,7 @@ public class DepositServiceUnitTest {
         userDeposits.add(testDeposit1);
         userDeposits.add(testDeposit2);
         when(depositRepo
-                .findAllBySavingsAccount_UserUsernameAndDateBetweenOrderByDateDesc(
+                .findAllBySavingsAccount_UserUsernameAndDateBetweenOrderByDateAsc(
                         anyString(), any(LocalDate.class), any(LocalDate.class)))
                 .thenReturn(userDeposits);
         assertThat(

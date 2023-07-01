@@ -8,9 +8,9 @@ import java.util.List;
 
 @Repository
 public interface DepositRepo extends JpaRepository<Deposit, Long> {
-    List<Deposit> findAllBySavingsAccount_UserUsernameAndDateBetweenOrderByDateDesc(
+    List<Deposit> findAllBySavingsAccount_UserUsernameAndDateBetweenOrderByDateAsc(
             String username, LocalDate firstDate, LocalDate lastDate);
 
-    List<Deposit> findAllBySavingsAccountIdAndDateBetweenOrderByDateDesc(
+    List<Deposit> findAllBySavingsAccountIdAndDateBetweenOrderByDateAsc(
             Long accountId, LocalDate firstDate, LocalDate lastDate);
 }

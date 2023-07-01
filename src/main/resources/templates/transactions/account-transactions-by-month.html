@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
+<head>
+    <title>User's Deposits</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <br />
+    <div class="container border rounded text-center bg-light">
+        <h2 th:text="${user.username} + '\'s Transactions'"></h2>
+        <h3 th:text="${savingsAccount.bank.bankName} + ': ' + ${savingsAccount.accountName}"></h3>
+        <h3 th:text="${month} + ' ' + ${year}"></h3>
+        <hr />
+        <div th:if="${transactionRecords.size() > 0}">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Transaction</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Source</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="transaction : ${transactionRecords}">
+                        <td th:if="${transaction.transactionType == 'DEPOSIT'}"
+                            th:text="${transaction.depositRecord.date}"></td>
+                        <td th:unless="${transaction.transactionType == 'DEPOSIT'}"
+                            class="bg-secondary text-white"
+                            th:text="${transaction.withdrawalRecord.date}"></td>
+                        <td th:if="${transaction.transactionType == 'DEPOSIT'}"
+                            th:text="${transaction.transactionType}"></td>
+                        <td th:unless="${transaction.transactionType == 'DEPOSIT'}"
+                            class="bg-secondary text-white"
+                            th:text="${transaction.transactionType}"></td>
+                        <td th:if="${transaction.transactionType == 'DEPOSIT'}"
+                            th:text="${transaction.depositRecord.depositAmount}"></td>
+                        <td th:unless="${transaction.transactionType == 'DEPOSIT'}"
+                            class="bg-secondary text-white"
+                            th:text="${transaction.withdrawalRecord.amount}"></td>
+                        <td th:if="${transaction.transactionType == 'DEPOSIT'}"
+                            class="cross-out-alert"
+                            th:text="${transaction.depositRecord.incomeSource.incomeSourceName}"></td>
+                        <td th:unless="${transaction.transactionType == 'DEPOSIT'}"
+                            class="bg-secondary text-white"
+                            th:text="${'                              '}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div th:unless="${transactionRecords.size() > 0}">
+            <br />
+            <br />
+            <h3>No Transactions for this month!</h3>
+            <br />
+            <br />
+        </div>
+        <br />
+    </div>
+    <br />
+</div>
+</body>
+</html>

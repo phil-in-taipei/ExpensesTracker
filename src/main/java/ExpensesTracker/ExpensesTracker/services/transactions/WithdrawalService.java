@@ -24,7 +24,7 @@ public class WithdrawalService {
     public List<Withdrawal> getAllUserWithdrawalsInDateRange(
             String username, LocalDate firstDate, LocalDate lastDate) {
         return withdrawalRepo
-                .findAllBySavingsAccount_UserUsernameAndDateBetweenOrderByDateDesc(
+                .findAllBySavingsAccount_UserUsernameAndDateBetweenOrderByDateAsc(
                         username, firstDate, lastDate
                 );
     }
@@ -34,7 +34,7 @@ public class WithdrawalService {
     public List<Withdrawal> getAllWithdrawalsBySavingsAccountInDateRange(
             Long accountId, LocalDate firstDate, LocalDate lastDate) {
         return withdrawalRepo
-                .findAllBySavingsAccountIdAndDateBetweenOrderByDateDesc(
+                .findAllBySavingsAccountIdAndDateBetweenOrderByDateAsc(
                         accountId, firstDate, lastDate
                 );
     }
