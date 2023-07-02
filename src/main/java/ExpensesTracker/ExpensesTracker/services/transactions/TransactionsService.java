@@ -20,6 +20,10 @@ public class TransactionsService {
     @Autowired
     WithdrawalService withdrawalService;
 
+    // this will query both deposits and withdrawals during a date range
+    // and concatenate them together into a ListArray of a TransactionRecord
+    // datatype which can accept either datatype and a string specifying
+    // which one
     @Loggable
     public List<TransactionRecord> getAllTransactionsBySavingsAccountInDateRange(
             Long accountId, LocalDate firstDate, LocalDate lastDate) {
@@ -31,27 +35,37 @@ public class TransactionsService {
                 .getAllWithdrawalsBySavingsAccountInDateRange(
                         accountId, firstDate, lastDate);
         LocalDate dateInMonth = firstDate;
+        // iterating through all dates in the date range
         while (dateInMonth.isBefore(lastDate.plusDays(1))) {
-            System.out.println("---------------------------------------------------------------------------");
-            System.out.println("This is the date: " + dateInMonth);
-            if (!depositsInDateRange.isEmpty()) {
+            // checks if any deposits were in the query during that date range
+            if(!depositsInDateRange.isEmpty()) {
                 List<Deposit> depositsOnDate = new ArrayList<>();
                 for (Deposit deposit : depositsInDateRange) {
                     if (dateInMonth.isEqual(deposit.getDate())){
-                        System.out.println("***********A deposit was on that date, adding to list*********");
+                        // if a date matches the deposit is added to a temporary ListArray
+                        // and it is also inserted into a new TransactionRecord object,
+                        // which is added to the monthly list array of TransactionRecords
                         depositsOnDate.add(deposit);
                         TransactionRecord transactionRecordOnDate = new TransactionRecord(deposit);
                         transactionRecords.add(transactionRecordOnDate);
                     }
                     if (deposit.getDate().isAfter(dateInMonth)){
+                        // if the date is after the date in the date iteration
+                        // it stops iterating through the list of deposits
                         break;
                     }
                 }
+                // removes the deposits already inserted into the TransactionsRecord list
+                // to prevent unnecessary iterations
                 depositsInDateRange.removeAll(depositsOnDate);
             }
-            if(!withdrawalsInDateRange.isEmpty()) {
+        // checks if any withdrawals were in the query during that date range
+        if(!withdrawalsInDateRange.isEmpty()) {
                 List<Withdrawal> withdrawalsOnDate =  new ArrayList<>();
                 for (Withdrawal withdrawal : withdrawalsInDateRange) {
+                    // if a date matches the withdrawal is added to a temporary ListArray
+                    // and it is also inserted into a new TransactionRecord object,
+                    // which is added to the monthly list array of TransactionRecords
                     if (dateInMonth.isEqual(withdrawal.getDate())) {
                         System.out.println("***********A withdrawal was on that date, adding to list*********");
                         withdrawalsOnDate.add(withdrawal);
@@ -59,11 +73,16 @@ public class TransactionsService {
                         transactionRecords.add(transactionRecordOnDate);
                     }
                     if (withdrawal.getDate().isAfter(dateInMonth)){
+                        // if the date is after the date in the date iteration
+                        // it stops iterating through the list of deposits
                         break;
                     }
                 }
+            // removes the withdrawals already inserted into the TransactionsRecord list
+            // to prevent unnecessary iterations
                 withdrawalsInDateRange.removeAll(withdrawalsOnDate);
             }
+            // continue on to the next date in the date range
             dateInMonth = dateInMonth.plusDays(1);
         }
         return transactionRecords;

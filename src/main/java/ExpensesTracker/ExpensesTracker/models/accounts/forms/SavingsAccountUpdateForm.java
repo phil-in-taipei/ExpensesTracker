@@ -3,6 +3,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+// this form only includes the updatable fields of the SavingsAccount object
 @Getter
 @Builder
 @AllArgsConstructor

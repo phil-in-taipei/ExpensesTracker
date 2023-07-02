@@ -20,6 +20,8 @@ public class WithdrawalService {
         withdrawalRepo.deleteById(id);
     }
 
+    // for user to search for all withdrawals in all of users' savings account
+    // by month and year
     @Loggable
     public List<Withdrawal> getAllUserWithdrawalsInDateRange(
             String username, LocalDate firstDate, LocalDate lastDate) {
@@ -29,7 +31,7 @@ public class WithdrawalService {
                 );
     }
 
-
+    // for user to search withdrawals by savings account, month, and year
     @Loggable
     public List<Withdrawal> getAllWithdrawalsBySavingsAccountInDateRange(
             Long accountId, LocalDate firstDate, LocalDate lastDate) {

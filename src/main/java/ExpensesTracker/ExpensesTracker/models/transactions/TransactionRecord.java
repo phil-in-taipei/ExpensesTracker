@@ -2,6 +2,9 @@ package ExpensesTracker.ExpensesTracker.models.transactions;
 
 import lombok.*;
 
+// this is hybrid data type which can be associated with either a deposit or a withdrawal
+// with a String field specifying the transaction type and the deposit or withdrawal associated
+// via  an overloaded constructor
 @Getter
 @Builder
 @AllArgsConstructor

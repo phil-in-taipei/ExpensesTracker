@@ -17,10 +17,12 @@ public class DepositService {
     @Autowired
     DepositRepo depositRepo;
 
+    @Loggable
     public void deleteDeposit(Long id) {
         depositRepo.deleteById(id);
     }
 
+    // for user to search deposits by savings account, month, and year
     @Loggable
     public List<Deposit> getAllDepositsBySavingsAccountInDateRange(
             Long accountId, LocalDate firstDate, LocalDate lastDate) {
@@ -30,6 +32,8 @@ public class DepositService {
                 );
     }
 
+    // for user to search for all deposits in all of users' savings account
+    // by month and year
     @Loggable
     public List<Deposit> getAllUserDepositsInDateRange(
             String username, LocalDate firstDate, LocalDate lastDate) {
