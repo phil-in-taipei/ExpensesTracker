@@ -35,26 +35,34 @@ public class TransactionsService {
             System.out.println("---------------------------------------------------------------------------");
             System.out.println("This is the date: " + dateInMonth);
             if (!depositsInDateRange.isEmpty()) {
-                Deposit nextDepositInList =  depositsInDateRange.get(0);
-                System.out.println("This is the next deposit in the list");
-                System.out.println(nextDepositInList.getDate());
-                if (dateInMonth.isEqual(nextDepositInList.getDate())){
-                    System.out.println("***********A deposit was on that date, adding to list*********");
-                    TransactionRecord transactionRecordOnDate = new TransactionRecord(nextDepositInList);
-                    transactionRecords.add(transactionRecordOnDate);
-                    depositsInDateRange.remove(nextDepositInList);
+                List<Deposit> depositsOnDate = new ArrayList<>();
+                for (Deposit deposit : depositsInDateRange) {
+                    if (dateInMonth.isEqual(deposit.getDate())){
+                        System.out.println("***********A deposit was on that date, adding to list*********");
+                        depositsOnDate.add(deposit);
+                        TransactionRecord transactionRecordOnDate = new TransactionRecord(deposit);
+                        transactionRecords.add(transactionRecordOnDate);
+                    }
+                    if (deposit.getDate().isAfter(dateInMonth)){
+                        break;
+                    }
                 }
+                depositsInDateRange.removeAll(depositsOnDate);
             }
             if(!withdrawalsInDateRange.isEmpty()) {
-                Withdrawal nextWithdrawalInList =  withdrawalsInDateRange.get(0);
-                System.out.println("This is the next withdrawal in the list: ");
-                System.out.println(nextWithdrawalInList.getDate());
-                if (dateInMonth.isEqual(nextWithdrawalInList.getDate())) {
-                    System.out.println("***********A withdrawal was on that date, adding to list*********");
-                    TransactionRecord transactionRecordOnDate = new TransactionRecord(nextWithdrawalInList);
-                    transactionRecords.add(transactionRecordOnDate);
-                    withdrawalsInDateRange.remove(nextWithdrawalInList);
+                List<Withdrawal> withdrawalsOnDate =  new ArrayList<>();
+                for (Withdrawal withdrawal : withdrawalsInDateRange) {
+                    if (dateInMonth.isEqual(withdrawal.getDate())) {
+                        System.out.println("***********A withdrawal was on that date, adding to list*********");
+                        withdrawalsOnDate.add(withdrawal);
+                        TransactionRecord transactionRecordOnDate = new TransactionRecord(withdrawal);
+                        transactionRecords.add(transactionRecordOnDate);
+                    }
+                    if (withdrawal.getDate().isAfter(dateInMonth)){
+                        break;
+                    }
                 }
+                withdrawalsInDateRange.removeAll(withdrawalsOnDate);
             }
             dateInMonth = dateInMonth.plusDays(1);
         }
