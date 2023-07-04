@@ -26,4 +26,13 @@ public class TransactionRecord {
         this.withdrawalRecord=withdrawal;
         this.transactionType="WITHDRAWAL";
     }
+
+    @Override
+    public String toString() {
+        return "TransactionRecord{" +
+                "depositRecord=" + depositRecord +
+                ", transactionType='" + transactionType + '\'' +
+                ", withdrawalRecord=" + withdrawalRecord +
+                '}';
+    }
 }

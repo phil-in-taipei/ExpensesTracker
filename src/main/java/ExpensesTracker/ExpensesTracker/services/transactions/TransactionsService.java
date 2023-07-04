@@ -37,6 +37,7 @@ public class TransactionsService {
         LocalDate dateInMonth = firstDate;
         // iterating through all dates in the date range
         while (dateInMonth.isBefore(lastDate.plusDays(1))) {
+            System.out.println("This is the date in the month: " + dateInMonth);
             // checks if any deposits were in the query during that date range
             if(!depositsInDateRange.isEmpty()) {
                 List<Deposit> depositsOnDate = new ArrayList<>();
@@ -67,7 +68,6 @@ public class TransactionsService {
                     // and it is also inserted into a new TransactionRecord object,
                     // which is added to the monthly list array of TransactionRecords
                     if (dateInMonth.isEqual(withdrawal.getDate())) {
-                        System.out.println("***********A withdrawal was on that date, adding to list*********");
                         withdrawalsOnDate.add(withdrawal);
                         TransactionRecord transactionRecordOnDate = new TransactionRecord(withdrawal);
                         transactionRecords.add(transactionRecordOnDate);

@@ -35,4 +35,14 @@ public class Deposit {
     @Column(nullable = false)
     private LocalDate date;
 
+    @Override
+    public String toString() {
+        return "Deposit{" +
+                "id=" + id +
+                ", depositAmount=" + depositAmount +
+                ", incomeSource=" + incomeSource +
+                ", savingsAccount=" + savingsAccount +
+                ", date=" + date +
+                '}';
+    }
 }

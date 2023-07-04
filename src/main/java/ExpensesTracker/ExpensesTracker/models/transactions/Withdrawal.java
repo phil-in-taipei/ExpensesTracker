@@ -28,4 +28,14 @@ public class Withdrawal {
 
     @Column(nullable = false)
     private LocalDate date;
+
+    @Override
+    public String toString() {
+        return "Withdrawal{" +
+                "id=" + id +
+                ", savingsAccount=" + savingsAccount +
+                ", amount=" + amount +
+                ", date=" + date +
+                '}';
+    }
 }
